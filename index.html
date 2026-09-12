@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A practical, project-based course for planning a small organisation's first net-zero pathway.">
+  <title>Planning a Net-Zero Pathway</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to course content</a>
+  <div class="app-shell">
+    <aside class="course-nav" id="course-nav" aria-label="Course navigation">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">NZ</div>
+        <div><span class="eyebrow">Practical course</span><strong>Net-Zero Pathway</strong></div>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-list">Course menu <span aria-hidden="true">☰</span></button>
+      <nav id="nav-list">
+        <button class="nav-link active" data-page="welcome"><span>00</span>Start here</button>
+        <button class="nav-link" data-page="journey"><span>01</span>Your journey</button>
+        <button class="nav-link" data-page="module1"><span>02</span>Understand</button>
+        <button class="nav-link" data-page="module2"><span>03</span>Measure</button>
+        <button class="nav-link" data-page="module3"><span>04</span>Prioritise</button>
+        <button class="nav-link" data-page="module4"><span>05</span>Plan</button>
+        <button class="nav-link" data-page="toolkit"><span>06</span>Toolkit</button>
+        <button class="nav-link" data-page="completion"><span>07</span>Completion</button>
+      </nav>
+      <div class="progress-card">
+        <div class="progress-label"><span>Course progress</span><strong id="progress-text">0%</strong></div>
+        <div class="progress-track" aria-hidden="true"><div id="progress-bar"></div></div>
+        <small>Saved on this device</small>
+      </div>
+    </aside>
+
+    <main id="main" tabindex="-1">
+      <header class="topbar">
+        <div><span class="eyebrow" id="page-kicker">Orientation</span><span class="breadcrumb" id="breadcrumb">Start here</span></div>
+        <button class="ghost-button" id="print-page" type="button">Print / save PDF</button>
+      </header>
+
+      <section class="page active" data-page-panel="welcome">
+        <div class="hero">
+          <div class="hero-copy">
+            <span class="pill">18 hours · 4 weeks · workplace project</span>
+            <h1>Planning a <em>Net-Zero Pathway</em> for a Small Organisation</h1>
+            <p class="dek">Turn the operational information you already have into a defensible carbon baseline, three practical priorities and a one-page roadmap management can act on.</p>
+            <div class="hero-actions">
+              <button class="primary-button" data-go="journey">Begin the course <span aria-hidden="true">→</span></button>
+              <button class="text-button" data-go="toolkit">Open the toolkit</button>
+            </div>
+          </div>
+          <div class="hero-visual" role="img" aria-label="A pathway moving from organisational boundary to baseline, priorities and a net-zero roadmap">
+            <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+            <div class="path-node n1"><b>1</b><span>Boundary</span></div>
+            <div class="path-node n2"><b>2</b><span>Baseline</span></div>
+            <div class="path-node n3"><b>3</b><span>Priorities</span></div>
+            <div class="path-node n4"><b>4</b><span>Roadmap</span></div>
+          </div>
+        </div>
+
+        <div class="content-wrap">
+          <section class="scenario-card">
+            <span class="eyebrow">The challenge</span>
+            <blockquote>“We want to become net zero. What exactly are our emissions today—and what should we do first?”</blockquote>
+            <p>This course guides you through answering that question with evidence from your own organisation. The goal is not perfect carbon modelling. It is a credible first pathway that can be discussed, improved and acted upon.</p>
+          </section>
+          <div class="outcomes-grid">
+            <article><span>01</span><h3>Define</h3><p>Set a sensible organisational and operational boundary.</p></article>
+            <article><span>02</span><h3>Estimate</h3><p>Build a baseline using activity data and suitable factors.</p></article>
+            <article><span>03</span><h3>Interpret</h3><p>Identify hotspots and priority areas for intervention.</p></article>
+            <article><span>04</span><h3>Evaluate</h3><p>Compare options by impact, cost, feasibility and time.</p></article>
+            <article><span>05</span><h3>Communicate</h3><p>Produce a concise, decision-ready net-zero roadmap.</p></article>
+          </div>
+          <div class="callout amber"><strong>Your final assessment starts now.</strong><p>Each week produces one part of the final roadmap. Keep your organisation's bills, fuel records, travel data and purchasing information nearby.</p></div>
+        </div>
+      </section>
+
+      <section class="page" data-page-panel="journey">
+        <div class="chapter-head"><span class="eyebrow">Orientation · 30 minutes</span><h2>Your carbon journey</h2><p>Four connected stages. One useful workplace outcome.</p></div>
+        <div class="content-wrap">
+          <div class="journey-line">
+            <button data-go="module1"><span>Week 1</span><b>Understand</b><small>What are we measuring?</small></button>
+            <button data-go="module2"><span>Week 2</span><b>Measure</b><small>Where are emissions coming from?</small></button>
+            <button data-go="module3"><span>Week 3</span><b>Prioritise</b><small>What should we tackle first?</small></button>
+            <button data-go="module4"><span>Week 4</span><b>Plan</b><small>How will we act?</small></button>
+          </div>
+          <section class="two-col">
+            <div>
+              <span class="eyebrow">Before you begin</span><h3>Choose your organisation</h3>
+              <p>Use your own organisation, a department you understand well, or the Greenfield Training Centre practice case.</p>
+              <label for="org-name">Organisation or unit name</label>
+              <input id="org-name" data-save="orgName" placeholder="e.g. Northside Community Clinic">
+              <label for="baseline-year">Preferred baseline year</label>
+              <input id="baseline-year" data-save="baselineYear" inputmode="numeric" placeholder="e.g. 2025">
+              <div class="save-note" role="status">Responses save automatically.</div>
+            </div>
+            <div class="diagnostic">
+              <span class="eyebrow">Quick diagnostic</span><h3>How ready are you?</h3>
+              <label><input type="checkbox" data-check="diag1"> I can access 12 months of electricity data.</label>
+              <label><input type="checkbox" data-check="diag2"> I know which vehicles and fuels are in scope.</label>
+              <label><input type="checkbox" data-check="diag3"> I can identify a person who can validate assumptions.</label>
+              <label><input type="checkbox" data-check="diag4"> I can describe the organisation's key operations.</label>
+              <p class="mini-feedback" id="diag-feedback">Check what is already available. Gaps are normal; you will document them.</p>
+            </div>
+          </section>
+          <div class="callout cyan"><strong>Learning promise</strong><p>By the end, you will have a boundary map, baseline, action matrix and one-page roadmap—not just notes about carbon accounting.</p></div>
+          <button class="primary-button section-next" data-complete="journey" data-go="module1">I’m ready—start Week 1 →</button>
+        </div>
+      </section>
+
+      <section class="page" data-page-panel="module1">
+        <div class="chapter-head"><span class="eyebrow">Week 1 · 4 hours</span><h2>Understand your starting point</h2><p>What exactly are we trying to decarbonise?</p></div>
+        <div class="content-wrap">
+          <section class="learning-block"><span class="block-number">1.1</span><div><span class="eyebrow">Why this matters</span><h3>A footprint needs an edge</h3><p>Before calculating anything, decide which sites, operations and emission sources belong inside the assessment. A boundary prevents double counting, unexplained omissions and a baseline that nobody can interpret.</p></div></section>
+          <div class="concept-chain" aria-label="Calculation logic"><div>Organisation boundary</div><span>→</span><div>Emission source</div><span>→</span><div>Activity data</div><span>→</span><div>Carbon estimate</div></div>
+          <section>
+            <span class="eyebrow">Learn one idea</span><h3>Three scopes, kept practical</h3>
+            <div class="scope-grid">
+              <article><b>Scope 1</b><h4>Direct emissions</h4><p>Fuel burned in owned vehicles or equipment, and refrigerant leaks from equipment you control.</p><small>Ask: do we directly operate or control it?</small></article>
+              <article><b>Scope 2</b><h4>Purchased energy</h4><p>Electricity, heat, steam or cooling bought for the organisation's use.</p><small>Ask: do we purchase this energy?</small></article>
+              <article><b>Scope 3</b><h4>Value-chain emissions</h4><p>Selected relevant sources such as business travel, waste, commuting and purchased goods.</p><small>Ask: is it material and can we estimate it?</small></article>
+            </div>
+          </section>
+          <section class="worked-example">
+            <div class="example-tag">Worked example · Greenfield Training Centre</div>
+            <h3>Greenfield draws a useful first boundary</h3>
+            <p>Greenfield operates one leased training building with 40 staff. It includes purchased electricity, petrol used by two company cars, refrigerant losses, business flights and general waste. It records commuting and purchased goods as future improvements because current data is weak.</p>
+            <div class="decision-row"><span>Inside now</span><b>Building · company cars · refrigerants · flights · waste</b></div>
+            <div class="decision-row muted"><span>Improve later</span><b>Commuting · purchased goods</b></div>
+          </section>
+          <section class="activity-card" id="boundary-tool">
+            <div class="activity-head"><span class="eyebrow">Guided activity · Evidence 1</span><h3>Build your carbon boundary map</h3><p>Select likely sources, then note what is included and where the evidence will come from.</p></div>
+            <div class="boundary-options" id="boundary-options"></div>
+            <div class="form-grid">
+              <div><label for="boundary-in">What sites, teams or operations are inside?</label><textarea id="boundary-in" data-save="boundaryIn" rows="4" placeholder="Describe the organisational boundary..."></textarea></div>
+              <div><label for="boundary-out">What is excluded for now—and why?</label><textarea id="boundary-out" data-save="boundaryOut" rows="4" placeholder="Name exclusions and reasons..."></textarea></div>
+              <div class="wide"><label for="data-sources">Where will the data come from?</label><textarea id="data-sources" data-save="dataSources" rows="3" placeholder="Bills, fuel cards, travel records, waste contractor..."></textarea></div>
+            </div>
+          </section>
+          <section class="knowledge-check" data-quiz="q1">
+            <span class="eyebrow">Check your thinking</span><h3>Purchased grid electricity belongs where?</h3>
+            <div class="choice-row"><button data-answer="wrong">Scope 1</button><button data-answer="correct">Scope 2</button><button data-answer="wrong">Always Scope 3</button></div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+          </section>
+          <div class="readiness"><strong>Readiness checkpoint</strong><p>You are ready when you can say what organisation you are measuring, which sources are included, and where the data will come from.</p></div>
+          <button class="primary-button section-next" data-complete="module1" data-go="module2">Save Week 1 and continue →</button>
+        </div>
+      </section>
+
+      <section class="page" data-page-panel="module2">
+        <div class="chapter-head"><span class="eyebrow">Week 2 · 5 hours</span><h2>Build your carbon baseline</h2><p>Where are our emissions coming from?</p></div>
+        <div class="content-wrap">
+          <section class="learning-block"><span class="block-number">2.1</span><div><span class="eyebrow">The central relationship</span><h3>Activity data × Emission factor = Estimated emissions</h3><p>Activity data describes what the organisation did—kilowatt-hours consumed, litres burned or kilometres travelled. An emission factor converts that activity into kilograms of carbon dioxide equivalent (kgCO₂e).</p></div></section>
+          <div class="formula"><span>85,000 kWh</span><b>×</b><span>0.55 kgCO₂e/kWh</span><b>=</b><strong>46,750 kgCO₂e</strong></div>
+          <div class="callout coral"><strong>Use suitable official factors.</strong><p>The example factors below are illustrative learning values, not reporting factors. Replace them with current factors approved for your country, year and reporting purpose.</p></div>
+          <section class="worked-example">
+            <div class="example-tag">Worked example · Greenfield</div><h3>Follow one row before building your own</h3>
+            <p>Greenfield's 2,400 litres of petrol multiplied by an illustrative factor of 2.31 kgCO₂e per litre gives 5,544 kgCO₂e. The row records both the source and the assumption, so another person can reproduce the estimate.</p>
+          </section>
+          <section class="activity-card calculator">
+            <div class="activity-head"><span class="eyebrow">Guided activity · Evidence 2</span><h3>Carbon baseline calculator</h3><p>Add rows or edit the starter categories. Results update instantly.</p></div>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Source</th><th>Scope</th><th>Activity</th><th>Unit</th><th>Factor</th><th>Confidence</th><th>kgCO₂e</th><th><span class="sr-only">Remove</span></th></tr></thead>
+              <tbody id="baseline-rows"></tbody>
+            </table></div>
+            <button class="ghost-button" id="add-baseline-row" type="button">+ Add emission source</button>
+            <div class="baseline-summary">
+              <div><span>Total estimated footprint</span><strong id="baseline-total">0 kgCO₂e</strong><small id="baseline-tonnes">0.00 tCO₂e</small></div>
+              <div><span>Largest source</span><strong id="largest-source">Add your data</strong><small id="largest-share">—</small></div>
+              <div><span>Data confidence</span><strong id="confidence-summary">Not assessed</strong><small>Improve low-confidence hotspots first</small></div>
+            </div>
+            <label for="baseline-assumptions">Assumptions and data limitations</label><textarea id="baseline-assumptions" data-save="baselineAssumptions" rows="4" placeholder="Record estimates, missing months, proxy values and factor sources..."></textarea>
+          </section>
+          <section class="knowledge-check" data-quiz="q2">
+            <span class="eyebrow">Interpret, don't just calculate</span><h3>Two organisations have different hotspots. Should they use the same reduction strategy?</h3>
+            <div class="choice-row"><button data-answer="wrong">Yes—best practice is universal</button><button data-answer="correct">No—the baseline should shape priorities</button></div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+          </section>
+          <details class="recovery"><summary>Need a recovery route?</summary><p>Load Greenfield's completed practice data, compare each calculation line by line, then replace the values with your organisation's records.</p><button class="text-button" id="load-example">Load Greenfield example</button></details>
+          <button class="primary-button section-next" data-complete="module2" data-go="module3">Save Week 2 and continue →</button>
+        </div>
+      </section>
+
+      <section class="page" data-page-panel="module3">
+        <div class="chapter-head"><span class="eyebrow">Week 3 · 4.5 hours</span><h2>Find and prioritise opportunities</h2><p>What should we tackle first?</p></div>
+        <div class="content-wrap">
+          <section class="learning-block"><span class="block-number">3.1</span><div><span class="eyebrow">From accounting to decisions</span><h3>Start with the hotspot, then test the action</h3><p>A high-carbon action is not automatically the best first move. A useful priority balances likely impact with cost, feasibility, timing, constraints and co-benefits.</p></div></section>
+          <div class="criteria-strip"><div><b>Impact</b><small>How much carbon?</small></div><div><b>Cost</b><small>What investment?</small></div><div><b>Feasibility</b><small>Can we deliver?</small></div><div><b>Time</b><small>How quickly?</small></div></div>
+          <section class="knowledge-check temptation" data-quiz="q3">
+            <span class="eyebrow">Commit before reveal</span><h3>“Install solar panels immediately.” Is this necessarily the best first action?</h3>
+            <label for="solar-reason">Write one reason for your decision before revealing the analysis.</label><textarea id="solar-reason" data-save="solarReason" rows="3" placeholder="I think... because..."></textarea>
+            <div class="choice-row"><button data-answer="wrong">Yes, always</button><button data-answer="correct">It depends</button></div>
+            <div class="quiz-feedback" aria-live="polite"></div>
+          </section>
+          <section class="worked-example"><div class="example-tag">Worked example · Greenfield</div><h3>Why the obvious answer can mislead</h3><div class="matrix-mini"><div><b>Optimise HVAC</b><span>Medium impact · low cost · fast</span><strong>High priority</strong></div><div><b>Solar PV</b><span>High impact · high cost · medium term</span><strong>High priority</strong></div><div><b>Replace entire fleet</b><span>High impact · very high cost · slow</span><strong>Medium priority</strong></div></div></section>
+          <section class="activity-card">
+            <div class="activity-head"><span class="eyebrow">Guided activity · Evidence 3</span><h3>Carbon action prioritisation matrix</h3><p>Score each option from 1 (least favourable) to 5 (most favourable). For cost, 5 means lowest cost. The weighted score is a guide—not a substitute for judgement.</p></div>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Proposed action</th><th>Impact</th><th>Cost</th><th>Feasibility</th><th>Speed</th><th>Score</th><th><span class="sr-only">Remove</span></th></tr></thead>
+              <tbody id="action-rows"></tbody>
+            </table></div>
+            <button class="ghost-button" id="add-action-row" type="button">+ Add reduction action</button>
+            <div class="priority-output"><span>Current top three</span><ol id="top-actions"><li>Add and score your options</li></ol></div>
+            <label for="priority-rationale">Why are these your three priorities?</label><textarea id="priority-rationale" data-save="priorityRationale" rows="4" placeholder="Connect each choice to a baseline hotspot, delivery reality and expected benefit..."></textarea>
+          </section>
+          <button class="primary-button section-next" data-complete="module3" data-go="module4">Save Week 3 and continue →</button>
+        </div>
+      </section>
+
+      <section class="page" data-page-panel="module4">
+        <div class="chapter-head"><span class="eyebrow">Week 4 · 4.5 hours</span><h2>Build your net-zero roadmap</h2><p>How do we turn analysis into an actionable pathway?</p></div>
+        <div class="content-wrap">
+          <section class="plan-contrast">
+            <article><span>Plan A</span><h3>Aspirational</h3><p>Reduce emissions. Install solar. Encourage recycling. Become net zero by 2040.</p></article>
+            <article class="strong"><span>Plan B</span><h3>Decision-ready</h3><p>A stated baseline, quantified priorities, named owners, dates, costs and indicators.</p></article>
+          </section>
+          <div class="callout cyan"><strong>Which plan could management act on next Monday?</strong><p>Your roadmap should make the next decision visible while also showing the longer direction.</p></div>
+          <section class="activity-card roadmap-builder">
+            <div class="activity-head"><span class="eyebrow">Final performance task · 35%</span><h3>One-page net-zero roadmap</h3><p>The preview below compiles your earlier work. Complete the remaining decision fields, then print or save it as a PDF.</p></div>
+            <div class="form-grid">
+              <div><label for="target-statement">Direction or target</label><input id="target-statement" data-save="targetStatement" placeholder="e.g. Reduce operational emissions 50% by 2030"></div>
+              <div><label for="roadmap-review">Formal review point</label><input id="roadmap-review" data-save="roadmapReview" placeholder="e.g. Quarterly; full review June 2027"></div>
+              <div class="wide"><label for="longer-direction">Longer-term direction</label><textarea id="longer-direction" data-save="longerDirection" rows="3" placeholder="What comes after the first three priorities?"></textarea></div>
+              <div><label for="roadmap-owners">Responsible owners</label><textarea id="roadmap-owners" data-save="roadmapOwners" rows="3" placeholder="Action 1 — owner..."></textarea></div>
+              <div><label for="roadmap-indicators">2–4 progress indicators</label><textarea id="roadmap-indicators" data-save="roadmapIndicators" rows="3" placeholder="Monthly kWh; litres fuel; tCO₂e per year..."></textarea></div>
+            </div>
+            <div id="roadmap-preview" class="roadmap-sheet" aria-label="Net-zero roadmap preview"></div>
+          </section>
+          <section class="rubric">
+            <span class="eyebrow">Quality check</span><h3>Is the roadmap decision-ready?</h3>
+            <div class="rubric-grid">
+              <label><input type="checkbox" data-check="rubric1"> Baseline logic and assumptions are transparent.</label>
+              <label><input type="checkbox" data-check="rubric2"> Priorities address significant hotspots.</label>
+              <label><input type="checkbox" data-check="rubric3"> Costs, constraints and feasibility are considered.</label>
+              <label><input type="checkbox" data-check="rubric4"> Actions are sequenced over time.</label>
+              <label><input type="checkbox" data-check="rubric5"> The roadmap is concise and understandable.</label>
+            </div>
+          </section>
+          <label for="first-decision"><strong>Transfer to work:</strong> What is the first decision you will ask management to make?</label><textarea id="first-decision" data-save="firstDecision" rows="3" placeholder="At the next management meeting, I will ask..."></textarea>
+          <button class="primary-button section-next" data-complete="module4" data-go="completion">Complete the course →</button>
+        </div>
+      </section>
+
+      <section class="page" data-page-panel="toolkit">
+        <div class="chapter-head"><span class="eyebrow">Companion toolkit</span><h2>Your working resources</h2><p>Everything you produce stays connected to the final roadmap.</p></div>
+        <div class="content-wrap">
+          <div class="resource-grid">
+            <button data-go="journey"><span>01</span><h3>Carbon Journey Map</h3><p>See the four-stage project at a glance.</p></button>
+            <button data-go="module1"><span>02</span><h3>Boundary Template</h3><p>Define sources, inclusions and evidence.</p></button>
+            <button data-go="module2"><span>03</span><h3>Baseline Calculator</h3><p>Estimate emissions and identify hotspots.</p></button>
+            <button id="toolkit-example"><span>04</span><h3>Example Dataset</h3><p>Load the completed Greenfield practice data.</p></button>
+            <button data-go="module3"><span>05</span><h3>Action Matrix</h3><p>Compare five to eight reduction measures.</p></button>
+            <button data-go="module4"><span>06</span><h3>Roadmap Template</h3><p>Compile the one-page final deliverable.</p></button>
+          </div>
+          <div class="callout amber"><strong>About emission factors</strong><p>Emission factors vary by geography, reporting year, electricity grid and methodology. Record the title, year and source of every factor used. Replace all illustrative values before making public claims.</p></div>
+          <section class="assessment-table"><span class="eyebrow">Assessment</span><h3>Four pieces of workplace evidence</h3><div class="table-wrap"><table><thead><tr><th>Evidence</th><th>Weight</th><th>What achievement looks like</th></tr></thead><tbody><tr><td>Carbon Boundary Map</td><td>15%</td><td>A clear, justified scope with realistic data sources.</td></tr><tr><td>Baseline Carbon Footprint</td><td>30%</td><td>Reproducible calculations and transparent assumptions.</td></tr><tr><td>Action Prioritisation Matrix</td><td>20%</td><td>Options compared against consistent decision criteria.</td></tr><tr><td>One-Page Roadmap</td><td>35%</td><td>A concise, feasible and decision-ready pathway.</td></tr></tbody></table></div></section>
+        </div>
+      </section>
+
+      <section class="page" data-page-panel="completion">
+        <div class="completion-hero"><span class="eyebrow">Course completion</span><div class="completion-ring" id="completion-ring"><strong>0%</strong><span>complete</span></div><h2>Your first pathway is a living plan.</h2><p>A credible baseline states what is known, what is estimated and what needs to improve. Revisit it as data quality grows and actions move from proposal to delivery.</p></div>
+        <div class="content-wrap narrow">
+          <h3>Evidence checklist</h3><div id="evidence-list" class="evidence-list"></div>
+          <div class="callout green"><strong>Recommended next move</strong><p>Present the one-page roadmap to a decision-maker. Ask for one concrete decision: permission to validate data, fund a priority action, assign an owner or set a formal review date.</p></div>
+          <button class="primary-button" data-go="module4">Review and print my roadmap</button>
+          <button class="text-button" id="reset-course">Reset all saved course data</button>
+        </div>
+      </section>
+      <div id="toast" role="status" aria-live="polite"></div>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
