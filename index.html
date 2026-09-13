@@ -1,275 +1,1406 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A practical, project-based course for planning a small organisation's first net-zero pathway.">
-  <title>Planning a Net-Zero Pathway</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planning a Net-Zero Pathway for a Small Organisation</title>
+<style>
+  :root{
+    --ink:#1c2b25;
+    --ink-soft:#44554d;
+    --paper:#faf8f2;
+    --paper-raised:#ffffff;
+    --line:#dcd6c6;
+    --green-deep:#1f5c46;
+    --green:#2f7d5e;
+    --green-soft:#e4efe6;
+    --amber:#b3701f;
+    --amber-soft:#f7ecd9;
+    --blue:#2a5f7a;
+    --blue-soft:#e4eef2;
+    --red:#a3402e;
+    --red-soft:#f6e6e1;
+    --radius:14px;
+    --radius-sm:8px;
+    --shadow:0 1px 2px rgba(28,43,37,0.06), 0 6px 20px rgba(28,43,37,0.06);
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sans{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  h1,h2,h3,h4{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.25;letter-spacing:-0.01px;}
+  h1{font-size:1.9rem;margin:0 0 .3em;}
+  h2{font-size:1.4rem;margin:1.6em 0 .5em;}
+  h3{font-size:1.12rem;margin:1.3em 0 .4em;color:var(--green-deep);}
+  h4{font-size:1rem;margin:1em 0 .3em;}
+  p{margin:0 0 1em;}
+  a{color:var(--green-deep);}
+  ul,ol{padding-left:1.3em;}
+  li{margin-bottom:.4em;}
+  table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.95rem;}
+  th,td{border:1px solid var(--line);padding:.55em .7em;text-align:left;vertical-align:top;}
+  th{background:var(--green-soft);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.82rem;text-transform:uppercase;letter-spacing:.03em;color:var(--green-deep);}
+  tr:nth-child(even) td{background:rgba(0,0,0,0.015);}
+
+  /* App shell */
+  #app-shell{display:flex;min-height:100vh;}
+  #topbar{
+    position:fixed;top:0;left:0;right:0;height:56px;
+    background:var(--green-deep);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 1rem;z-index:40;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  }
+  #topbar .brand{display:flex;align-items:center;gap:.6em;font-weight:600;font-size:.95rem;}
+  #topbar .brand .mark{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#5fae87,#1f5c46);display:flex;align-items:center;justify-content:center;font-size:.85rem;}
+  #topbar .progress-pill{background:rgba(255,255,255,0.14);border-radius:999px;padding:.35em .9em;font-size:.78rem;display:flex;align-items:center;gap:.5em;}
+  #topbar .progress-pill .bar-track{width:90px;height:6px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
+  #topbar .progress-pill .bar-fill{height:100%;background:#a9e2c3;border-radius:99px;transition:width .3s ease;}
+  #menu-toggle{display:none;background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:7px;padding:.3em .6em;font-size:.85rem;cursor:pointer;}
+
+  #sidebar{
+    width:250px;flex-shrink:0;background:var(--paper-raised);
+    border-right:1px solid var(--line);
+    padding:72px 0 2rem;position:fixed;top:0;bottom:0;left:0;overflow-y:auto;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    z-index:30;
+  }
+  #sidebar .nav-section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);padding:0 1.2rem;margin:1.1em 0 .5em;}
+  .nav-item{
+    display:flex;align-items:center;gap:.7em;padding:.6em 1.2rem;cursor:pointer;color:var(--ink-soft);
+    font-size:.88rem;border-left:3px solid transparent;
+  }
+  .nav-item:hover{background:var(--green-soft);}
+  .nav-item.active{background:var(--green-soft);color:var(--green-deep);border-left-color:var(--green-deep);font-weight:600;}
+  .nav-item .num{
+    width:22px;height:22px;border-radius:50%;background:var(--line);color:var(--ink-soft);
+    display:flex;align-items:center;justify-content:center;font-size:.72rem;flex-shrink:0;
+  }
+  .nav-item.done .num{background:var(--green);color:#fff;}
+  .nav-item.active .num{background:var(--green-deep);color:#fff;}
+  .nav-item .label{flex:1;}
+  .nav-item .tick{font-size:.8rem;color:var(--green);}
+
+  #main{margin-left:250px;padding:88px 2.4rem 5rem;max-width:920px;}
+  @media (max-width:880px){
+    #sidebar{transform:translateX(-100%);transition:transform .25s ease;box-shadow:0 0 30px rgba(0,0,0,.15);}
+    #sidebar.open{transform:translateX(0);}
+    #main{margin-left:0;padding:88px 1.1rem 5rem;}
+    #menu-toggle{display:inline-block;}
+  }
+  @media (max-width:480px){
+    #topbar .brand span.brand-text{display:none;}
+    #topbar .progress-pill .bar-track{display:none;}
+    #topbar{padding:0 .7rem;}
+  }
+
+  .eyebrow{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:.76rem;color:var(--green-deep);font-weight:700;margin-bottom:.4em;}
+  .driving-q{font-size:1.15rem;color:var(--green-deep);font-style:italic;margin:.2em 0 1em;}
+
+  /* ---------- Hero banner ---------- */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){ .fade-in{animation:none !important;} }
+  .fade-in{animation:fadeUp .6s ease both;}
+  .fade-in.d1{animation-delay:.08s;}
+  .fade-in.d2{animation-delay:.16s;}
+  .fade-in.d3{animation-delay:.24s;}
+
+  .hero{
+    position:relative;margin:0 0 2rem;border-radius:20px;overflow:hidden;
+    background:linear-gradient(160deg,#1f5c46 0%,#2f7d5e 45%,#c98a3a 100%);
+    box-shadow:0 10px 34px rgba(31,92,70,0.22);
+    min-height:320px;
+  }
+  .hero-svg{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  .hero-scrim{position:absolute;inset:0;background:linear-gradient(0deg, rgba(15,30,24,0.72) 0%, rgba(15,30,24,0.42) 42%, rgba(15,30,24,0.08) 75%);}
+  .hero-content{position:relative;z-index:2;padding:2.6rem 2.6rem 2.2rem;color:#fdfaf2;}
+  .hero-eyebrow{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:.74rem;font-weight:700;color:#d9f0e2;margin-bottom:.7em;display:flex;align-items:center;gap:.5em;}
+  .hero-eyebrow .leaf{font-size:.9rem;}
+  .hero h1{color:#fff;font-size:2.15rem;margin:0 0 .35em;text-shadow:0 2px 18px rgba(0,0,0,0.25);}
+  .hero .hero-sub{font-size:1.12rem;color:#f3ead4;font-style:italic;margin:0 0 1.3em;max-width:640px;}
+  .hero-cta-row{display:flex;gap:.8em;flex-wrap:wrap;}
+  .hero .btn{box-shadow:0 6px 18px rgba(0,0,0,0.18);}
+  .hero .btn.ghost-light{background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.55);backdrop-filter:blur(2px);}
+  .hero .btn.ghost-light:hover{background:rgba(255,255,255,0.22);}
+
+  .stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0 0 2.2rem;box-shadow:var(--shadow);}
+  .stat-cell{background:var(--paper-raised);padding:1.1em .8em;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .stat-cell .stat-num{font-size:1.5rem;font-weight:800;color:var(--green-deep);line-height:1.1;}
+  .stat-cell .stat-label{font-size:.72rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;margin-top:.3em;}
+  @media (max-width:700px){
+    .stat-strip{grid-template-columns:repeat(2,1fr);}
+    .hero-content{padding:2rem 1.3rem 1.7rem;}
+    .hero h1{font-size:1.6rem;}
+  }
+
+  .section-icon{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--green-soft);color:var(--green-deep);margin-right:.5em;flex-shrink:0;vertical-align:middle;}
+  h2.with-icon{display:flex;align-items:center;gap:.2em;}
+
+  .meta-row{display:flex;flex-wrap:wrap;gap:.6em;margin:.8em 0 1.6em;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .chip{background:var(--paper-raised);border:1px solid var(--line);border-radius:999px;padding:.32em .85em;font-size:.78rem;color:var(--ink-soft);}
+
+  .card{background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);padding:1.4rem 1.5rem;margin:1.2em 0;box-shadow:var(--shadow);transition:box-shadow .2s ease, transform .2s ease;}
+  .card.hoverable:hover{box-shadow:0 4px 8px rgba(28,43,37,0.08), 0 14px 28px rgba(28,43,37,0.1);transform:translateY(-2px);}
+  .card.tight{padding:1rem 1.2rem;}
+  .stage{margin:2.4em 0;padding-top:.2em;border-top:1px solid var(--line);}
+  .stage:first-of-type{border-top:none;}
+  .stage-label{display:flex;align-items:center;gap:.6em;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin:1.6em 0 .6em;}
+  .stage-label .dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;}
+
+  .scenario{background:var(--blue-soft);border-left:4px solid var(--blue);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1em 1.2em;margin:1em 0;}
+  .scenario .quote-mark{font-size:1.3rem;color:var(--blue);font-family:Georgia,serif;}
+  .callout{background:var(--amber-soft);border-left:4px solid var(--amber);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1em 1.2em;margin:1em 0;}
+  .callout.good{background:var(--green-soft);border-left-color:var(--green);}
+  .callout.data{background:#eef1f6;border-left-color:var(--blue);}
+
+  .worked-example{background:#fbfaf5;border:1px dashed var(--line);border-radius:var(--radius);padding:1.3rem 1.4rem;margin:1.2em 0;}
+  .worked-example .tag{display:inline-block;background:var(--green-deep);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;padding:.25em .7em;border-radius:5px;margin-bottom:.6em;}
+
+  .btn{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    display:inline-flex;align-items:center;gap:.5em;
+    background:var(--green-deep);color:#fff;border:none;border-radius:var(--radius-sm);
+    padding:.65em 1.3em;font-size:.92rem;font-weight:600;cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .btn:hover{background:var(--green);}
+  .btn:active{transform:scale(.98);}
+  .btn.secondary{background:var(--paper-raised);color:var(--green-deep);border:1px solid var(--line);}
+  .btn.secondary:hover{background:var(--green-soft);}
+  .btn.ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--line);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  .btn-row{display:flex;gap:.7em;flex-wrap:wrap;margin:1.3em 0;}
+
+  label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.82rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:.3em;}
+  input[type=text],input[type=number],input[type=date],select,textarea{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    width:100%;padding:.55em .7em;border:1px solid var(--line);border-radius:var(--radius-sm);
+    font-size:.92rem;background:#fff;color:var(--ink);
+  }
+  textarea{resize:vertical;min-height:4.5em;font-family:inherit;}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--green);outline-offset:1px;}
+  .field{margin-bottom:1em;}
+  .field .hint{font-size:.78rem;color:var(--ink-soft);margin-top:.3em;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1em;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1em;}
+  @media (max-width:700px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+
+  .checklist label{display:flex;align-items:flex-start;gap:.6em;font-weight:400;font-size:.94rem;color:var(--ink);margin-bottom:.55em;cursor:pointer;font-family:inherit;}
+  .checklist input[type=checkbox]{width:auto;margin-top:.3em;accent-color:var(--green-deep);flex-shrink:0;}
+
+  .quiz-q{background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);padding:1.2rem 1.3rem;margin:1em 0;}
+  .quiz-opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:.7em .9em;margin:.5em 0;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.9rem;color:var(--ink);transition:border-color .15s ease;}
+  .quiz-opt:hover{border-color:var(--green);}
+  .quiz-opt.correct{border-color:var(--green);background:var(--green-soft);}
+  .quiz-opt.incorrect{border-color:var(--red);background:var(--red-soft);}
+  .quiz-opt.disabled{cursor:default;}
+  .quiz-feedback{margin-top:.7em;padding:.8em 1em;border-radius:var(--radius-sm);font-size:.88rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .quiz-feedback.correct{background:var(--green-soft);color:var(--green-deep);}
+  .quiz-feedback.incorrect{background:var(--red-soft);color:var(--red);}
+
+  .tool-panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:1.4rem;margin:1.2em 0;}
+  .tool-panel .tool-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1em;flex-wrap:wrap;gap:.6em;}
+  .tool-panel .tool-header h4{margin:0;}
+  .small-btn{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.8rem;background:var(--green-soft);color:var(--green-deep);border:1px solid var(--green);border-radius:var(--radius-sm);padding:.4em .8em;cursor:pointer;}
+  .small-btn.danger{background:var(--red-soft);color:var(--red);border-color:var(--red);}
+  .remove-row{background:none;border:none;color:var(--red);cursor:pointer;font-size:1rem;}
+
+  .conf-badge{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.72rem;padding:.2em .55em;border-radius:5px;font-weight:700;}
+  .conf-High{background:var(--green-soft);color:var(--green-deep);}
+  .conf-Medium{background:var(--amber-soft);color:var(--amber);}
+  .conf-Low{background:var(--red-soft);color:var(--red);}
+
+  .bar-row{display:flex;align-items:center;gap:.7em;margin:.5em 0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.85rem;}
+  .bar-row .bar-label{width:150px;flex-shrink:0;color:var(--ink-soft);}
+  .bar-row .bar-track{flex:1;height:16px;background:var(--paper);border-radius:6px;overflow:hidden;border:1px solid var(--line);}
+  .bar-row .bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-deep));}
+  .bar-row .bar-val{width:90px;text-align:right;flex-shrink:0;font-weight:600;}
+
+  .priority-High{color:var(--green-deep);font-weight:700;}
+  .priority-Medium{color:var(--amber);font-weight:700;}
+  .priority-Low{color:var(--red);font-weight:700;}
+
+  .readiness{background:var(--green-deep);color:#fff;border-radius:var(--radius);padding:1.4rem 1.5rem;margin:2em 0 1em;}
+  .readiness h3{color:#fff;margin-top:0;}
+  .readiness ul{margin:0;}
+
+  .roadmap-sheet{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:1.6rem;box-shadow:var(--shadow);}
+  .roadmap-sheet table td, .roadmap-sheet table th{font-size:.86rem;}
+  .roadmap-title{text-align:center;border-bottom:3px solid var(--green-deep);padding-bottom:.7em;margin-bottom:1em;}
+  .roadmap-title h2{margin:0;color:var(--green-deep);}
+
+  .journey-map{display:flex;justify-content:space-between;gap:.5em;margin:1.6em 0;flex-wrap:wrap;position:relative;}
+  .journey-map::before{content:"";position:absolute;top:22px;left:12%;right:12%;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 12px);z-index:0;}
+  .journey-step{flex:1;min-width:120px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;position:relative;z-index:1;}
+  .journey-step .circle{width:44px;height:44px;border-radius:50%;background:var(--paper-raised);color:var(--green-deep);display:flex;align-items:center;justify-content:center;margin:0 auto .4em;font-weight:700;border:2px solid var(--green);transition:all .2s ease;}
+  .journey-step.active .circle{background:var(--amber);color:#fff;border-color:var(--amber);box-shadow:0 0 0 5px var(--amber-soft);}
+  .journey-step.done .circle{background:var(--green-deep);color:#fff;border-color:var(--green-deep);}
+  .journey-step .jtitle{font-size:.82rem;font-weight:600;}
+  .journey-step .jartefact{font-size:.74rem;color:var(--ink-soft);}
+
+  .rubric-row{display:grid;grid-template-columns:1fr 2fr auto;gap:1em;align-items:center;padding:.8em 0;border-bottom:1px solid var(--line);}
+  .rubric-row:last-child{border-bottom:none;}
+  .rubric-toggle{display:flex;gap:.4em;}
+  .rubric-toggle button{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.78rem;padding:.35em .7em;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer;}
+  .rubric-toggle button.sel-achieved{background:var(--green-deep);color:#fff;border-color:var(--green-deep);}
+  .rubric-toggle button.sel-revise{background:var(--amber);color:#fff;border-color:var(--amber);}
+
+  footer.course-footer{margin-top:4em;padding-top:1.5em;border-top:1px solid var(--line);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.8rem;color:var(--ink-soft);}
+
+  @media print{
+    #topbar,#sidebar,#menu-toggle,.no-print{display:none !important;}
+    #main{margin-left:0;padding:0;max-width:100%;}
+    body{background:#fff;}
+  }
+</style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to course content</a>
-  <div class="app-shell">
-    <aside class="course-nav" id="course-nav" aria-label="Course navigation">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">NZ</div>
-        <div><span class="eyebrow">Practical course</span><strong>Net-Zero Pathway</strong></div>
-      </div>
-      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-list">Course menu <span aria-hidden="true">☰</span></button>
-      <nav id="nav-list">
-        <button class="nav-link active" data-page="welcome"><span>00</span>Start here</button>
-        <button class="nav-link" data-page="journey"><span>01</span>Your journey</button>
-        <button class="nav-link" data-page="module1"><span>02</span>Understand</button>
-        <button class="nav-link" data-page="module2"><span>03</span>Measure</button>
-        <button class="nav-link" data-page="module3"><span>04</span>Prioritise</button>
-        <button class="nav-link" data-page="module4"><span>05</span>Plan</button>
-        <button class="nav-link" data-page="toolkit"><span>06</span>Toolkit</button>
-        <button class="nav-link" data-page="completion"><span>07</span>Completion</button>
-      </nav>
-      <div class="progress-card">
-        <div class="progress-label"><span>Course progress</span><strong id="progress-text">0%</strong></div>
-        <div class="progress-track" aria-hidden="true"><div id="progress-bar"></div></div>
-        <small>Saved on this device</small>
-      </div>
-    </aside>
 
-    <main id="main" tabindex="-1">
-      <header class="topbar">
-        <div><span class="eyebrow" id="page-kicker">Orientation</span><span class="breadcrumb" id="breadcrumb">Start here</span></div>
-        <button class="ghost-button" id="print-page" type="button">Print / save PDF</button>
-      </header>
-
-      <section class="page active" data-page-panel="welcome">
-        <div class="hero">
-          <div class="hero-copy">
-            <span class="pill">18 hours · 4 weeks · workplace project</span>
-            <h1>Planning a <em>Net-Zero Pathway</em> for a Small Organisation</h1>
-            <p class="dek">Turn the operational information you already have into a defensible carbon baseline, three practical priorities and a one-page roadmap management can act on.</p>
-            <div class="hero-actions">
-              <button class="primary-button" data-go="journey">Begin the course <span aria-hidden="true">→</span></button>
-              <button class="text-button" data-go="toolkit">Open the toolkit</button>
-            </div>
-          </div>
-          <div class="hero-visual" role="img" aria-label="A pathway moving from organisational boundary to baseline, priorities and a net-zero roadmap">
-            <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
-            <div class="path-node n1"><b>1</b><span>Boundary</span></div>
-            <div class="path-node n2"><b>2</b><span>Baseline</span></div>
-            <div class="path-node n3"><b>3</b><span>Priorities</span></div>
-            <div class="path-node n4"><b>4</b><span>Roadmap</span></div>
-          </div>
-        </div>
-
-        <div class="content-wrap">
-          <section class="scenario-card">
-            <span class="eyebrow">The challenge</span>
-            <blockquote>“We want to become net zero. What exactly are our emissions today—and what should we do first?”</blockquote>
-            <p>This course guides you through answering that question with evidence from your own organisation. The goal is not perfect carbon modelling. It is a credible first pathway that can be discussed, improved and acted upon.</p>
-          </section>
-          <div class="outcomes-grid">
-            <article><span>01</span><h3>Define</h3><p>Set a sensible organisational and operational boundary.</p></article>
-            <article><span>02</span><h3>Estimate</h3><p>Build a baseline using activity data and suitable factors.</p></article>
-            <article><span>03</span><h3>Interpret</h3><p>Identify hotspots and priority areas for intervention.</p></article>
-            <article><span>04</span><h3>Evaluate</h3><p>Compare options by impact, cost, feasibility and time.</p></article>
-            <article><span>05</span><h3>Communicate</h3><p>Produce a concise, decision-ready net-zero roadmap.</p></article>
-          </div>
-          <div class="callout amber"><strong>Your final assessment starts now.</strong><p>Each week produces one part of the final roadmap. Keep your organisation's bills, fuel records, travel data and purchasing information nearby.</p></div>
-        </div>
-      </section>
-
-      <section class="page" data-page-panel="journey">
-        <div class="chapter-head"><span class="eyebrow">Orientation · 30 minutes</span><h2>Your carbon journey</h2><p>Four connected stages. One useful workplace outcome.</p></div>
-        <div class="content-wrap">
-          <div class="journey-line">
-            <button data-go="module1"><span>Week 1</span><b>Understand</b><small>What are we measuring?</small></button>
-            <button data-go="module2"><span>Week 2</span><b>Measure</b><small>Where are emissions coming from?</small></button>
-            <button data-go="module3"><span>Week 3</span><b>Prioritise</b><small>What should we tackle first?</small></button>
-            <button data-go="module4"><span>Week 4</span><b>Plan</b><small>How will we act?</small></button>
-          </div>
-          <section class="two-col">
-            <div>
-              <span class="eyebrow">Before you begin</span><h3>Choose your organisation</h3>
-              <p>Use your own organisation, a department you understand well, or the Greenfield Training Centre practice case.</p>
-              <label for="org-name">Organisation or unit name</label>
-              <input id="org-name" data-save="orgName" placeholder="e.g. Northside Community Clinic">
-              <label for="baseline-year">Preferred baseline year</label>
-              <input id="baseline-year" data-save="baselineYear" inputmode="numeric" placeholder="e.g. 2025">
-              <div class="save-note" role="status">Responses save automatically.</div>
-            </div>
-            <div class="diagnostic">
-              <span class="eyebrow">Quick diagnostic</span><h3>How ready are you?</h3>
-              <label><input type="checkbox" data-check="diag1"> I can access 12 months of electricity data.</label>
-              <label><input type="checkbox" data-check="diag2"> I know which vehicles and fuels are in scope.</label>
-              <label><input type="checkbox" data-check="diag3"> I can identify a person who can validate assumptions.</label>
-              <label><input type="checkbox" data-check="diag4"> I can describe the organisation's key operations.</label>
-              <p class="mini-feedback" id="diag-feedback">Check what is already available. Gaps are normal; you will document them.</p>
-            </div>
-          </section>
-          <div class="callout cyan"><strong>Learning promise</strong><p>By the end, you will have a boundary map, baseline, action matrix and one-page roadmap—not just notes about carbon accounting.</p></div>
-          <button class="primary-button section-next" data-complete="journey" data-go="module1">I’m ready—start Week 1 →</button>
-        </div>
-      </section>
-
-      <section class="page" data-page-panel="module1">
-        <div class="chapter-head"><span class="eyebrow">Week 1 · 4 hours</span><h2>Understand your starting point</h2><p>What exactly are we trying to decarbonise?</p></div>
-        <div class="content-wrap">
-          <section class="learning-block"><span class="block-number">1.1</span><div><span class="eyebrow">Why this matters</span><h3>A footprint needs an edge</h3><p>Before calculating anything, decide which sites, operations and emission sources belong inside the assessment. A boundary prevents double counting, unexplained omissions and a baseline that nobody can interpret.</p></div></section>
-          <div class="concept-chain" aria-label="Calculation logic"><div>Organisation boundary</div><span>→</span><div>Emission source</div><span>→</span><div>Activity data</div><span>→</span><div>Carbon estimate</div></div>
-          <section>
-            <span class="eyebrow">Learn one idea</span><h3>Three scopes, kept practical</h3>
-            <div class="scope-grid">
-              <article><b>Scope 1</b><h4>Direct emissions</h4><p>Fuel burned in owned vehicles or equipment, and refrigerant leaks from equipment you control.</p><small>Ask: do we directly operate or control it?</small></article>
-              <article><b>Scope 2</b><h4>Purchased energy</h4><p>Electricity, heat, steam or cooling bought for the organisation's use.</p><small>Ask: do we purchase this energy?</small></article>
-              <article><b>Scope 3</b><h4>Value-chain emissions</h4><p>Selected relevant sources such as business travel, waste, commuting and purchased goods.</p><small>Ask: is it material and can we estimate it?</small></article>
-            </div>
-          </section>
-          <section class="worked-example">
-            <div class="example-tag">Worked example · Greenfield Training Centre</div>
-            <h3>Greenfield draws a useful first boundary</h3>
-            <p>Greenfield operates one leased training building with 40 staff. It includes purchased electricity, petrol used by two company cars, refrigerant losses, business flights and general waste. It records commuting and purchased goods as future improvements because current data is weak.</p>
-            <div class="decision-row"><span>Inside now</span><b>Building · company cars · refrigerants · flights · waste</b></div>
-            <div class="decision-row muted"><span>Improve later</span><b>Commuting · purchased goods</b></div>
-          </section>
-          <section class="activity-card" id="boundary-tool">
-            <div class="activity-head"><span class="eyebrow">Guided activity · Evidence 1</span><h3>Build your carbon boundary map</h3><p>Select likely sources, then note what is included and where the evidence will come from.</p></div>
-            <div class="boundary-options" id="boundary-options"></div>
-            <div class="form-grid">
-              <div><label for="boundary-in">What sites, teams or operations are inside?</label><textarea id="boundary-in" data-save="boundaryIn" rows="4" placeholder="Describe the organisational boundary..."></textarea></div>
-              <div><label for="boundary-out">What is excluded for now—and why?</label><textarea id="boundary-out" data-save="boundaryOut" rows="4" placeholder="Name exclusions and reasons..."></textarea></div>
-              <div class="wide"><label for="data-sources">Where will the data come from?</label><textarea id="data-sources" data-save="dataSources" rows="3" placeholder="Bills, fuel cards, travel records, waste contractor..."></textarea></div>
-            </div>
-          </section>
-          <section class="knowledge-check" data-quiz="q1">
-            <span class="eyebrow">Check your thinking</span><h3>Purchased grid electricity belongs where?</h3>
-            <div class="choice-row"><button data-answer="wrong">Scope 1</button><button data-answer="correct">Scope 2</button><button data-answer="wrong">Always Scope 3</button></div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-          </section>
-          <div class="readiness"><strong>Readiness checkpoint</strong><p>You are ready when you can say what organisation you are measuring, which sources are included, and where the data will come from.</p></div>
-          <button class="primary-button section-next" data-complete="module1" data-go="module2">Save Week 1 and continue →</button>
-        </div>
-      </section>
-
-      <section class="page" data-page-panel="module2">
-        <div class="chapter-head"><span class="eyebrow">Week 2 · 5 hours</span><h2>Build your carbon baseline</h2><p>Where are our emissions coming from?</p></div>
-        <div class="content-wrap">
-          <section class="learning-block"><span class="block-number">2.1</span><div><span class="eyebrow">The central relationship</span><h3>Activity data × Emission factor = Estimated emissions</h3><p>Activity data describes what the organisation did—kilowatt-hours consumed, litres burned or kilometres travelled. An emission factor converts that activity into kilograms of carbon dioxide equivalent (kgCO₂e).</p></div></section>
-          <div class="formula"><span>85,000 kWh</span><b>×</b><span>0.55 kgCO₂e/kWh</span><b>=</b><strong>46,750 kgCO₂e</strong></div>
-          <div class="callout coral"><strong>Use suitable official factors.</strong><p>The example factors below are illustrative learning values, not reporting factors. Replace them with current factors approved for your country, year and reporting purpose.</p></div>
-          <section class="worked-example">
-            <div class="example-tag">Worked example · Greenfield</div><h3>Follow one row before building your own</h3>
-            <p>Greenfield's 2,400 litres of petrol multiplied by an illustrative factor of 2.31 kgCO₂e per litre gives 5,544 kgCO₂e. The row records both the source and the assumption, so another person can reproduce the estimate.</p>
-          </section>
-          <section class="activity-card calculator">
-            <div class="activity-head"><span class="eyebrow">Guided activity · Evidence 2</span><h3>Carbon baseline calculator</h3><p>Add rows or edit the starter categories. Results update instantly.</p></div>
-            <div class="table-wrap"><table>
-              <thead><tr><th>Source</th><th>Scope</th><th>Activity</th><th>Unit</th><th>Factor</th><th>Confidence</th><th>kgCO₂e</th><th><span class="sr-only">Remove</span></th></tr></thead>
-              <tbody id="baseline-rows"></tbody>
-            </table></div>
-            <button class="ghost-button" id="add-baseline-row" type="button">+ Add emission source</button>
-            <div class="baseline-summary">
-              <div><span>Total estimated footprint</span><strong id="baseline-total">0 kgCO₂e</strong><small id="baseline-tonnes">0.00 tCO₂e</small></div>
-              <div><span>Largest source</span><strong id="largest-source">Add your data</strong><small id="largest-share">—</small></div>
-              <div><span>Data confidence</span><strong id="confidence-summary">Not assessed</strong><small>Improve low-confidence hotspots first</small></div>
-            </div>
-            <label for="baseline-assumptions">Assumptions and data limitations</label><textarea id="baseline-assumptions" data-save="baselineAssumptions" rows="4" placeholder="Record estimates, missing months, proxy values and factor sources..."></textarea>
-          </section>
-          <section class="knowledge-check" data-quiz="q2">
-            <span class="eyebrow">Interpret, don't just calculate</span><h3>Two organisations have different hotspots. Should they use the same reduction strategy?</h3>
-            <div class="choice-row"><button data-answer="wrong">Yes—best practice is universal</button><button data-answer="correct">No—the baseline should shape priorities</button></div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-          </section>
-          <details class="recovery"><summary>Need a recovery route?</summary><p>Load Greenfield's completed practice data, compare each calculation line by line, then replace the values with your organisation's records.</p><button class="text-button" id="load-example">Load Greenfield example</button></details>
-          <button class="primary-button section-next" data-complete="module2" data-go="module3">Save Week 2 and continue →</button>
-        </div>
-      </section>
-
-      <section class="page" data-page-panel="module3">
-        <div class="chapter-head"><span class="eyebrow">Week 3 · 4.5 hours</span><h2>Find and prioritise opportunities</h2><p>What should we tackle first?</p></div>
-        <div class="content-wrap">
-          <section class="learning-block"><span class="block-number">3.1</span><div><span class="eyebrow">From accounting to decisions</span><h3>Start with the hotspot, then test the action</h3><p>A high-carbon action is not automatically the best first move. A useful priority balances likely impact with cost, feasibility, timing, constraints and co-benefits.</p></div></section>
-          <div class="criteria-strip"><div><b>Impact</b><small>How much carbon?</small></div><div><b>Cost</b><small>What investment?</small></div><div><b>Feasibility</b><small>Can we deliver?</small></div><div><b>Time</b><small>How quickly?</small></div></div>
-          <section class="knowledge-check temptation" data-quiz="q3">
-            <span class="eyebrow">Commit before reveal</span><h3>“Install solar panels immediately.” Is this necessarily the best first action?</h3>
-            <label for="solar-reason">Write one reason for your decision before revealing the analysis.</label><textarea id="solar-reason" data-save="solarReason" rows="3" placeholder="I think... because..."></textarea>
-            <div class="choice-row"><button data-answer="wrong">Yes, always</button><button data-answer="correct">It depends</button></div>
-            <div class="quiz-feedback" aria-live="polite"></div>
-          </section>
-          <section class="worked-example"><div class="example-tag">Worked example · Greenfield</div><h3>Why the obvious answer can mislead</h3><div class="matrix-mini"><div><b>Optimise HVAC</b><span>Medium impact · low cost · fast</span><strong>High priority</strong></div><div><b>Solar PV</b><span>High impact · high cost · medium term</span><strong>High priority</strong></div><div><b>Replace entire fleet</b><span>High impact · very high cost · slow</span><strong>Medium priority</strong></div></div></section>
-          <section class="activity-card">
-            <div class="activity-head"><span class="eyebrow">Guided activity · Evidence 3</span><h3>Carbon action prioritisation matrix</h3><p>Score each option from 1 (least favourable) to 5 (most favourable). For cost, 5 means lowest cost. The weighted score is a guide—not a substitute for judgement.</p></div>
-            <div class="table-wrap"><table>
-              <thead><tr><th>Proposed action</th><th>Impact</th><th>Cost</th><th>Feasibility</th><th>Speed</th><th>Score</th><th><span class="sr-only">Remove</span></th></tr></thead>
-              <tbody id="action-rows"></tbody>
-            </table></div>
-            <button class="ghost-button" id="add-action-row" type="button">+ Add reduction action</button>
-            <div class="priority-output"><span>Current top three</span><ol id="top-actions"><li>Add and score your options</li></ol></div>
-            <label for="priority-rationale">Why are these your three priorities?</label><textarea id="priority-rationale" data-save="priorityRationale" rows="4" placeholder="Connect each choice to a baseline hotspot, delivery reality and expected benefit..."></textarea>
-          </section>
-          <button class="primary-button section-next" data-complete="module3" data-go="module4">Save Week 3 and continue →</button>
-        </div>
-      </section>
-
-      <section class="page" data-page-panel="module4">
-        <div class="chapter-head"><span class="eyebrow">Week 4 · 4.5 hours</span><h2>Build your net-zero roadmap</h2><p>How do we turn analysis into an actionable pathway?</p></div>
-        <div class="content-wrap">
-          <section class="plan-contrast">
-            <article><span>Plan A</span><h3>Aspirational</h3><p>Reduce emissions. Install solar. Encourage recycling. Become net zero by 2040.</p></article>
-            <article class="strong"><span>Plan B</span><h3>Decision-ready</h3><p>A stated baseline, quantified priorities, named owners, dates, costs and indicators.</p></article>
-          </section>
-          <div class="callout cyan"><strong>Which plan could management act on next Monday?</strong><p>Your roadmap should make the next decision visible while also showing the longer direction.</p></div>
-          <section class="activity-card roadmap-builder">
-            <div class="activity-head"><span class="eyebrow">Final performance task · 35%</span><h3>One-page net-zero roadmap</h3><p>The preview below compiles your earlier work. Complete the remaining decision fields, then print or save it as a PDF.</p></div>
-            <div class="form-grid">
-              <div><label for="target-statement">Direction or target</label><input id="target-statement" data-save="targetStatement" placeholder="e.g. Reduce operational emissions 50% by 2030"></div>
-              <div><label for="roadmap-review">Formal review point</label><input id="roadmap-review" data-save="roadmapReview" placeholder="e.g. Quarterly; full review June 2027"></div>
-              <div class="wide"><label for="longer-direction">Longer-term direction</label><textarea id="longer-direction" data-save="longerDirection" rows="3" placeholder="What comes after the first three priorities?"></textarea></div>
-              <div><label for="roadmap-owners">Responsible owners</label><textarea id="roadmap-owners" data-save="roadmapOwners" rows="3" placeholder="Action 1 — owner..."></textarea></div>
-              <div><label for="roadmap-indicators">2–4 progress indicators</label><textarea id="roadmap-indicators" data-save="roadmapIndicators" rows="3" placeholder="Monthly kWh; litres fuel; tCO₂e per year..."></textarea></div>
-            </div>
-            <div id="roadmap-preview" class="roadmap-sheet" aria-label="Net-zero roadmap preview"></div>
-          </section>
-          <section class="rubric">
-            <span class="eyebrow">Quality check</span><h3>Is the roadmap decision-ready?</h3>
-            <div class="rubric-grid">
-              <label><input type="checkbox" data-check="rubric1"> Baseline logic and assumptions are transparent.</label>
-              <label><input type="checkbox" data-check="rubric2"> Priorities address significant hotspots.</label>
-              <label><input type="checkbox" data-check="rubric3"> Costs, constraints and feasibility are considered.</label>
-              <label><input type="checkbox" data-check="rubric4"> Actions are sequenced over time.</label>
-              <label><input type="checkbox" data-check="rubric5"> The roadmap is concise and understandable.</label>
-            </div>
-          </section>
-          <label for="first-decision"><strong>Transfer to work:</strong> What is the first decision you will ask management to make?</label><textarea id="first-decision" data-save="firstDecision" rows="3" placeholder="At the next management meeting, I will ask..."></textarea>
-          <button class="primary-button section-next" data-complete="module4" data-go="completion">Complete the course →</button>
-        </div>
-      </section>
-
-      <section class="page" data-page-panel="toolkit">
-        <div class="chapter-head"><span class="eyebrow">Companion toolkit</span><h2>Your working resources</h2><p>Everything you produce stays connected to the final roadmap.</p></div>
-        <div class="content-wrap">
-          <div class="resource-grid">
-            <button data-go="journey"><span>01</span><h3>Carbon Journey Map</h3><p>See the four-stage project at a glance.</p></button>
-            <button data-go="module1"><span>02</span><h3>Boundary Template</h3><p>Define sources, inclusions and evidence.</p></button>
-            <button data-go="module2"><span>03</span><h3>Baseline Calculator</h3><p>Estimate emissions and identify hotspots.</p></button>
-            <button id="toolkit-example"><span>04</span><h3>Example Dataset</h3><p>Load the completed Greenfield practice data.</p></button>
-            <button data-go="module3"><span>05</span><h3>Action Matrix</h3><p>Compare five to eight reduction measures.</p></button>
-            <button data-go="module4"><span>06</span><h3>Roadmap Template</h3><p>Compile the one-page final deliverable.</p></button>
-          </div>
-          <div class="callout amber"><strong>About emission factors</strong><p>Emission factors vary by geography, reporting year, electricity grid and methodology. Record the title, year and source of every factor used. Replace all illustrative values before making public claims.</p></div>
-          <section class="assessment-table"><span class="eyebrow">Assessment</span><h3>Four pieces of workplace evidence</h3><div class="table-wrap"><table><thead><tr><th>Evidence</th><th>Weight</th><th>What achievement looks like</th></tr></thead><tbody><tr><td>Carbon Boundary Map</td><td>15%</td><td>A clear, justified scope with realistic data sources.</td></tr><tr><td>Baseline Carbon Footprint</td><td>30%</td><td>Reproducible calculations and transparent assumptions.</td></tr><tr><td>Action Prioritisation Matrix</td><td>20%</td><td>Options compared against consistent decision criteria.</td></tr><tr><td>One-Page Roadmap</td><td>35%</td><td>A concise, feasible and decision-ready pathway.</td></tr></tbody></table></div></section>
-        </div>
-      </section>
-
-      <section class="page" data-page-panel="completion">
-        <div class="completion-hero"><span class="eyebrow">Course completion</span><div class="completion-ring" id="completion-ring"><strong>0%</strong><span>complete</span></div><h2>Your first pathway is a living plan.</h2><p>A credible baseline states what is known, what is estimated and what needs to improve. Revisit it as data quality grows and actions move from proposal to delivery.</p></div>
-        <div class="content-wrap narrow">
-          <h3>Evidence checklist</h3><div id="evidence-list" class="evidence-list"></div>
-          <div class="callout green"><strong>Recommended next move</strong><p>Present the one-page roadmap to a decision-maker. Ask for one concrete decision: permission to validate data, fund a priority action, assign an owner or set a formal review date.</p></div>
-          <button class="primary-button" data-go="module4">Review and print my roadmap</button>
-          <button class="text-button" id="reset-course">Reset all saved course data</button>
-        </div>
-      </section>
-      <div id="toast" role="status" aria-live="polite"></div>
-    </main>
+<div id="topbar">
+  <div style="display:flex;align-items:center;gap:.8em;">
+    <button id="menu-toggle" class="no-print">&#9776;</button>
+    <div class="brand"><div class="mark">&#127793;</div> <span class="brand-text">Planning a Net-Zero Pathway</span></div>
   </div>
-  <script src="app.js"></script>
+  <div class="progress-pill">
+    <span id="topbar-progress-label">0% complete</span>
+    <div class="bar-track"><div class="bar-fill" id="topbar-progress-fill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div id="app-shell">
+  <nav id="sidebar"></nav>
+  <main id="main"></main>
+</div>
+
+<script>
+/* ============================================================
+   PLANNING A NET-ZERO PATHWAY FOR A SMALL ORGANISATION
+   Self-instructional course web app (single-file)
+   ============================================================ */
+
+/* ---------- Emission factor defaults (used by the Module 2 calculator) ----------
+   Electricity: Grid Emission Factor (GEF) Peninsular Malaysia, 2024 (provisional),
+     Suruhanjaya Tenaga / Energy Commission Malaysia, "Grid Emission Factor (GEF)
+     in Malaysia, 2022-2024 (Provisional)" = 0.740 tCO2e/MWh = 0.740 kg CO2e/kWh.
+   Petrol / Diesel: UK DEFRA/DESNZ 2026 Greenhouse Gas Conversion Factors,
+     average biofuel blend, litres basis. Used here as a widely referenced
+     international default where a learner's own national fuel factor is not
+     yet to hand.
+   Business flights / Waste: illustrative defaults only, clearly flagged as
+     Low confidence placeholders in the tool itself, because both vary hugely
+     with route, aircraft and waste-treatment method.
+------------------------------------------------------------------------------- */
+const EMISSION_FACTORS = {
+  electricity: { label: "Grid electricity", unit: "kWh", factor: 0.740, factorUnit: "kg CO2e/kWh",
+    source: "Grid Emission Factor (GEF) Peninsular Malaysia, 2024 provisional — Suruhanjaya Tenaga (Energy Commission Malaysia)", defaultConfidence: "Medium" },
+  petrol: { label: "Petrol (vehicles)", unit: "litres", factor: 2.075, factorUnit: "kg CO2e/litre",
+    source: "UK DEFRA/DESNZ 2026 GHG Conversion Factors, average biofuel blend", defaultConfidence: "Medium" },
+  diesel: { label: "Diesel (vehicles/generators)", unit: "litres", factor: 2.584, factorUnit: "kg CO2e/litre",
+    source: "UK DEFRA/DESNZ 2026 GHG Conversion Factors, average biofuel blend", defaultConfidence: "Medium" },
+  flights: { label: "Business flights", unit: "passenger-km", factor: 0.150, factorUnit: "kg CO2e/passenger-km",
+    source: "Illustrative short/medium-haul average — replace with an airline or route-based calculator for real reporting", defaultConfidence: "Low" },
+  waste: { label: "Waste to landfill", unit: "tonnes", factor: 450, factorUnit: "kg CO2e/tonne",
+    source: "Illustrative default for mixed general waste — highly dependent on disposal method; replace with local data where possible", defaultConfidence: "Low" },
+  custom: { label: "Other (custom)", unit: "units", factor: 1, factorUnit: "kg CO2e/unit",
+    source: "Learner-supplied factor — cite where it came from", defaultConfidence: "Low" }
+};
+
+/* ---------- Course data (populated below) ---------- */
+const courseData = {
+  title: "Planning a Net-Zero Pathway for a Small Organisation",
+  subtitle: "From Carbon Baseline to a Practical Action Roadmap",
+  clos: [
+    { id: "CLO1", text: "Define an appropriate organisational and operational boundary for a basic organisational carbon footprint." },
+    { id: "CLO2", text: "Estimate a baseline carbon footprint using available organisational activity data and suitable emission factors." },
+    { id: "CLO3", text: "Interpret the baseline to identify major emission sources and priority areas for intervention." },
+    { id: "CLO4", text: "Evaluate potential carbon-reduction actions using estimated carbon impact, cost, feasibility and implementation time." },
+    { id: "CLO5", text: "Produce a concise one-page net-zero roadmap containing the baseline, three priority actions, indicative cost, timeline and progress measures." }
+  ],
+  assessment: [
+    { evidence: "Organisation Carbon Boundary Map", weight: 15, module: 1 },
+    { evidence: "Baseline Carbon Footprint", weight: 30, module: 2 },
+    { evidence: "Carbon Action Prioritisation Matrix", weight: 20, module: 3 },
+    { evidence: "One-Page Net-Zero Roadmap", weight: 35, module: 4 }
+  ],
+  rubric: [
+    { criterion: "Baseline", good: "Emissions estimate is logically constructed and assumptions are transparent." },
+    { criterion: "Priorities", good: "Selected actions address significant emission sources." },
+    { criterion: "Feasibility", good: "Costs, constraints and implementation realities are considered." },
+    { criterion: "Pathway", good: "Actions are logically sequenced over time." },
+    { criterion: "Communication", good: "Roadmap is concise, understandable and decision-ready." }
+  ],
+  modules: [] // filled in further down the file
+};
+
+/* ---------- Application state (in-memory only; no persistence between sessions) ---------- */
+const state = {
+  view: "home",
+  sidebarOpen: false,
+  progress: { home: true, m1: false, m2: false, m3: false, m4: false, complete: false },
+  quizAnswers: {},          // { "m1-pk-0": optionIndex, ... }
+  reflections: {},          // free-text reflection answers keyed by id
+  checklists: {},           // { "m1-check-0": true }
+  boundary: {               // Module 1 output
+    orgName: "", sites: "", period: "", included: {}, dataSource: {}
+  },
+  baseline: {               // Module 2 output
+    rows: []
+  },
+  actions: {                // Module 3 output
+    rows: [], selectedIds: []
+  },
+  roadmap: {                // Module 4 output
+    longerTerm: "", monitoring: ["", "", "", ""], reviewPoint: "", actionDetails: {}
+  },
+  rubricSelf: {}             // final rubric self-check
+};
+
+/* ---------- Hand-drawn inline SVG hero illustration (fully self-contained, no external assets) ---------- */
+const HERO_SVG = `
+<svg class="hero-svg" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a sunrise over a small building with rooftop solar panels and a winding path leading toward the horizon">
+  <defs>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff3d1" stop-opacity="0.95"/>
+      <stop offset="55%" stop-color="#f5c168" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#f5c168" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pathGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fff3d6"/>
+      <stop offset="100%" stop-color="#f4b955"/>
+    </linearGradient>
+    <linearGradient id="panelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3d6f92"/>
+      <stop offset="100%" stop-color="#1f4a63" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="960" cy="120" r="130" fill="url(#sunGlow)"/>
+  <circle cx="960" cy="120" r="52" fill="#fff6df"/>
+
+  <path d="M0,300 C180,255 360,270 560,290 C780,312 960,255 1200,285 L1200,480 L0,480 Z" fill="#2f7d5e" opacity="0.5"/>
+  <path d="M0,355 C220,315 420,335 640,352 C880,372 1040,335 1200,352 L1200,480 L0,480 Z" fill="#1f5c46" opacity="0.85"/>
+
+  <g transform="translate(700,225)">
+    <rect x="0" y="60" width="230" height="95" rx="4" fill="#173c2e"/>
+    <polygon points="-14,60 244,60 220,32 10,32" fill="#123024"/>
+    <g transform="translate(24,38)">
+      <g>
+        <rect x="0" y="0" width="46" height="20" rx="2" fill="#2d5f80" stroke="#dff0ea" stroke-width="1.2"/>
+        <rect x="52" y="0" width="46" height="20" rx="2" fill="#2d5f80" stroke="#dff0ea" stroke-width="1.2"/>
+        <rect x="104" y="0" width="46" height="20" rx="2" fill="#2d5f80" stroke="#dff0ea" stroke-width="1.2"/>
+        <rect x="156" y="0" width="46" height="20" rx="2" fill="#2d5f80" stroke="#dff0ea" stroke-width="1.2"/>
+      </g>
+    </g>
+    <rect x="26" y="90" width="26" height="65" fill="#0e2018"/>
+    <rect x="90" y="78" width="20" height="20" rx="2" fill="#3d6f92" opacity="0.8"/>
+    <rect x="150" y="78" width="20" height="20" rx="2" fill="#3d6f92" opacity="0.8"/>
+  </g>
+
+  <path d="M-20,480 C160,410 260,430 340,392 C430,349 470,300 620,282 C760,266 820,255 900,270" fill="none" stroke="url(#pathGrad)" stroke-width="34" stroke-linecap="round" opacity="0.9"/>
+  <path d="M-20,480 C160,410 260,430 340,392 C430,349 470,300 620,282 C760,266 820,255 900,270" fill="none" stroke="#fff9ec" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round" opacity="0.8"/>
+
+  <g fill="#1f5c46" opacity="0.9">
+    <ellipse cx="90" cy="452" rx="34" ry="12"/>
+    <ellipse cx="150" cy="462" rx="46" ry="14"/>
+    <ellipse cx="1120" cy="392" rx="60" ry="16"/>
+    <ellipse cx="1060" cy="405" rx="40" ry="12"/>
+  </g>
+</svg>`;
+
+function uid(prefix){ return prefix + "-" + Math.random().toString(36).slice(2,9); }
+function esc(s){ return (s===undefined||s===null) ? "" : String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function fmt(n, dp){ if(isNaN(n)) return "0"; return Number(n).toLocaleString(undefined,{minimumFractionDigits:dp||0, maximumFractionDigits:dp||2}); }
+
+/* ============================================================
+   NAVIGATION / SHELL
+   ============================================================ */
+const SIDEBAR_ITEMS = [
+  { key:"home", label:"Course Home", section:"Start" },
+  { key:"m1", label:"Module 1 · Understand", section:"Weeks 1–4" },
+  { key:"m2", label:"Module 2 · Measure", section:null },
+  { key:"m3", label:"Module 3 · Prioritise", section:null },
+  { key:"m4", label:"Module 4 · Plan", section:null },
+  { key:"complete", label:"Course Completion", section:null }
+];
+
+function completionPercent(){
+  const keys = ["home","m1","m2","m3","m4","complete"];
+  const done = keys.filter(k => state.progress[k]).length;
+  return Math.round((done/keys.length)*100);
+}
+
+function renderSidebar(){
+  const nav = document.getElementById("sidebar");
+  let html = "";
+  SIDEBAR_ITEMS.forEach((item, i) => {
+    if(item.section){
+      html += `<div class="nav-section-label">${esc(item.section)}</div>`;
+    }
+    const active = state.view === item.key ? "active" : "";
+    const done = state.progress[item.key] ? "done" : "";
+    html += `<div class="nav-item ${active} ${done}" onclick="navigateTo('${item.key}')">
+      <span class="num">${state.progress[item.key] ? "&#10003;" : (i===0?"&#8226;":i)}</span>
+      <span class="label">${esc(item.label)}</span>
+    </div>`;
+  });
+  nav.innerHTML = html;
+}
+
+function renderTopbarProgress(){
+  const pct = completionPercent();
+  document.getElementById("topbar-progress-label").textContent = pct + "% complete";
+  document.getElementById("topbar-progress-fill").style.width = pct + "%";
+}
+
+function navigateTo(view){
+  state.view = view;
+  state.sidebarOpen = false;
+  document.getElementById("sidebar").classList.remove("open");
+  render();
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+}
+
+function markProgress(key){
+  state.progress[key] = true;
+  renderSidebar();
+  renderTopbarProgress();
+}
+
+document.getElementById("menu-toggle").addEventListener("click", () => {
+  state.sidebarOpen = !state.sidebarOpen;
+  document.getElementById("sidebar").classList.toggle("open", state.sidebarOpen);
+});
+
+function render(){
+  renderSidebar();
+  renderTopbarProgress();
+  const main = document.getElementById("main");
+  if(state.view === "home") main.innerHTML = renderHome();
+  else if(state.view === "m1") main.innerHTML = renderModuleView(0);
+  else if(state.view === "m2") main.innerHTML = renderModuleView(1);
+  else if(state.view === "m3") main.innerHTML = renderModuleView(2);
+  else if(state.view === "m4") main.innerHTML = renderModuleView(3);
+  else if(state.view === "complete") main.innerHTML = renderCompletion();
+  else main.innerHTML = renderHome();
+  afterRenderHooks();
+}
+
+/* Some views need a post-render pass to draw canvases / focus fields etc. Kept as a
+   single hook point so each view can register work without wiring extra events. */
+function afterRenderHooks(){
+  if(state.view === "m2") renderBaselineBars();
+}
+
+/* ============================================================
+   REUSABLE COMPONENTS
+   ============================================================ */
+function renderJourneyMap(activeIndex){
+  const steps = [
+    {t:"Understand", a:"Organisation Profile"},
+    {t:"Measure", a:"Carbon Baseline"},
+    {t:"Prioritise", a:"Action Matrix"},
+    {t:"Plan", a:"Net-Zero Roadmap"}
+  ];
+  return `<div class="journey-map">` + steps.map((s,i) => `
+    <div class="journey-step ${i<activeIndex ? "done" : (i===activeIndex?"active":"")}">
+      <div class="circle">${i<activeIndex ? "&#10003;" : (i+1)}</div>
+      <div class="jtitle">${esc(s.t)}</div>
+      <div class="jartefact">${esc(s.a)}</div>
+    </div>`).join("") + `</div>`;
+}
+
+function renderChecklist(items, idPrefix){
+  return `<div class="checklist">` + items.map((label, i) => {
+    const id = idPrefix + "-" + i;
+    const checked = state.checklists[id] ? "checked" : "";
+    return `<label><input type="checkbox" ${checked} onchange="state.checklists['${id}']=this.checked;"> <span>${label}</span></label>`;
+  }).join("") + `</div>`;
+}
+
+/* Quiz component: quiz = { question, options:[{text, correct, feedback}], scenario? } */
+function renderQuiz(quiz, id){
+  const answered = state.quizAnswers[id] !== undefined;
+  const chosen = state.quizAnswers[id];
+  let optsHtml = quiz.options.map((opt, i) => {
+    let cls = "quiz-opt";
+    if(answered){
+      cls += " disabled";
+      if(i === chosen && opt.correct) cls += " correct";
+      else if(i === chosen && !opt.correct) cls += " incorrect";
+      else if(opt.correct) cls += " correct";
+    }
+    return `<button class="${cls}" ${answered?"disabled":""} onclick="answerQuiz('${id}', ${i})">${esc(opt.text)}</button>`;
+  }).join("");
+  let feedbackHtml = "";
+  if(answered){
+    const opt = quiz.options[chosen];
+    feedbackHtml = `<div class="quiz-feedback ${opt.correct?"correct":"incorrect"}">${opt.feedback}</div>`;
+  }
+  return `<div class="quiz-q" id="quizwrap-${id}">
+    <p style="margin-bottom:.7em;"><strong>${quiz.question}</strong></p>
+    ${optsHtml}
+    ${feedbackHtml}
+  </div>`;
+}
+
+function answerQuiz(id, i){
+  state.quizAnswers[id] = i;
+  const quiz = window.__quizLookup[id];
+  const wrap = document.getElementById("quizwrap-" + id);
+  wrap.outerHTML = renderQuiz(quiz, id);
+}
+window.__quizLookup = {}; // populated as each renderQuiz call is made, see registerQuiz()
+function registerQuiz(quiz, id){ window.__quizLookup[id] = quiz; return renderQuiz(quiz, id); }
+
+/* ============================================================
+   HOME VIEW
+   ============================================================ */
+function renderHome(){
+  markProgress("home");
+  return `
+  <div class="hero fade-in">
+    ${HERO_SVG}
+    <div class="hero-scrim"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow"><span class="leaf">&#127793;</span> Continuing Professional Development &middot; 18 hours SLT &middot; 4 weeks</div>
+      <h1>${esc(courseData.title)}</h1>
+      <p class="hero-sub">${esc(courseData.subtitle)}</p>
+      <div class="hero-cta-row">
+        <button class="btn" onclick="navigateTo('m1')">Start Module 1 &rarr;</button>
+        <button class="btn ghost-light" onclick="document.getElementById('course-overview').scrollIntoView({behavior:'smooth'})">See how the course works</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-strip fade-in d1">
+    <div class="stat-cell"><div class="stat-num">18h</div><div class="stat-label">Learning time</div></div>
+    <div class="stat-cell"><div class="stat-num">4</div><div class="stat-label">Modules</div></div>
+    <div class="stat-cell"><div class="stat-num">4</div><div class="stat-label">Real artefacts</div></div>
+    <div class="stat-cell"><div class="stat-num">1</div><div class="stat-label">Roadmap you can use</div></div>
+  </div>
+
+  <div id="course-overview" class="fade-in d1">
+  <p>Plenty of small organisations want to do the right thing on carbon. Fewer know where to actually start. You might have a stack of electricity bills, a fuel log for the delivery van and a rough sense of where the waste goes, but none of that adds up to a plan on its own. That is the gap this course closes.</p>
+
+  <p>Across four weeks you will work with information from your own organisation, not a hypothetical one, and build it up into four connected pieces of work: a boundary map, a baseline footprint, a prioritised list of actions and a one-page roadmap you could genuinely hand to your management team. Alongside your own material, a fictional small business called <strong>Greenfield Training Centre</strong> is used throughout to show each step worked through in full before you try it yourself.</p>
+
+  <p>None of this requires you to become a carbon accountant. The aim is a first pathway that is honest about its assumptions, defensible enough to discuss, and specific enough to act on. Nobody expects perfect precision here. They expect a credible starting point.</p>
+  </div>
+
+  <div class="stage-label"><span class="dot"></span> The learner journey</div>
+  ${renderJourneyMap(-1)}
+
+  <h2 class="with-icon"><span class="section-icon">&#127919;</span>Who this is for</h2>
+  <div class="card tight hoverable">
+    <p style="margin-bottom:.6em;"><strong>Target learners:</strong> facilities managers, sustainability officers and operational personnel in small to medium organisations who understand their operations well but have limited experience in carbon accounting, emissions estimation or energy modelling.</p>
+    <p style="margin-bottom:0;"><strong>Assumed prior knowledge:</strong> comfort reading basic operational information such as electricity bills, fuel usage, purchasing records and a simple spreadsheet. No prior carbon-accounting experience is assumed.</p>
+  </div>
+
+  <h2 class="with-icon"><span class="section-icon">&#9989;</span>What you will be able to do</h2>
+  <table>
+    <tr><th style="width:70px;">CLO</th><th>By the end of the course, you will be able to</th></tr>
+    ${courseData.clos.map(c => `<tr><td><strong>${c.id}</strong></td><td>${esc(c.text)}</td></tr>`).join("")}
+  </table>
+
+  <h2 class="with-icon"><span class="section-icon">&#128197;</span>Pace over four weeks</h2>
+  <table>
+    <tr><th>Week</th><th>Module</th><th>Student learning time</th></tr>
+    <tr><td>1</td><td>Understand Your Starting Point</td><td>4 hours</td></tr>
+    <tr><td>2</td><td>Build Your Carbon Baseline</td><td>5 hours</td></tr>
+    <tr><td>3</td><td>Find and Prioritise Reduction Opportunities</td><td>4.5 hours</td></tr>
+    <tr><td>4</td><td>Build Your Net-Zero Roadmap</td><td>4.5 hours</td></tr>
+    <tr><td colspan="2" style="text-align:right;"><strong>Total</strong></td><td><strong>18 hours</strong></td></tr>
+  </table>
+
+  <h2 class="with-icon"><span class="section-icon">&#128202;</span>How you will be assessed</h2>
+  <p>This is a practical CPD course, so assessment is built almost entirely around the organisational analysis you produce rather than timed quizzes. The self-checks inside each module are there to help you learn, not to grade you.</p>
+  <table>
+    <tr><th>Evidence</th><th>Produced in</th><th>Weighting</th></tr>
+    ${courseData.assessment.map(a => `<tr><td>${esc(a.evidence)}</td><td>Module ${a.module}</td><td>${a.weight}%</td></tr>`).join("")}
+  </table>
+  <p class="field hint" style="margin-top:-.5em;">Your final roadmap is marked <strong>Achieved / Needs Revision</strong> against five criteria rather than a fine-grained numerical score &mdash; you can see the full rubric on the Course Completion page once you reach it.</p>
+
+  <div class="callout good">
+    <strong>The architectural idea behind this course:</strong> the final assessment begins this week. Module 1 defines what will be measured, Module 2 measures it, Module 3 decides what to do about it, and Module 4 turns those decisions into a roadmap. You will not reach Week 4 and suddenly meet a new assignment out of nowhere &mdash; everything you produce along the way feeds directly into the final piece.
+  </div>
+
+  <h2 class="with-icon"><span class="section-icon">&#128203;</span>Before you begin</h2>
+  <p>This course works best when you have a few pieces of real information from your organisation close at hand. You do not need all of them today &mdash; Module 1 will help you work out exactly what you need &mdash; but it helps to know roughly where to look.</p>
+  <div class="card tight hoverable">
+  ${renderChecklist([
+    "I know roughly which sites, buildings or activities I would call &ldquo;my organisation&rdquo; for this exercise",
+    "I can get hold of at least one recent electricity bill or utility statement",
+    "I have a rough idea of fuel use for any company vehicles or generators (litres per month or year, or at least fuel spend)",
+    "I know who else in my organisation might hold relevant records (finance, admin, transport, facilities)",
+    "I am ready to work with estimates and reasonable assumptions where exact data is not available"
+  ], "before-begin")}
+  </div>
+
+  <div class="btn-row">
+    <button class="btn" onclick="navigateTo('m1')">Start Module 1: Understand Your Starting Point &rarr;</button>
+  </div>
+  ${renderCourseFooter()}
+  `;
+}
+
+function renderCourseFooter(){
+  return `<footer class="course-footer no-print">Planning a Net-Zero Pathway for a Small Organisation &middot; Self-instructional CPD course &middot; Designed against COPPA:ODL 2019 and MQA SAMC guidance</footer>`;
+}
+
+/* ============================================================
+   GENERIC MODULE VIEW
+   ============================================================ */
+function renderModuleView(idx){
+  const m = courseData.modules[idx];
+  markProgress(m.id);
+
+  let html = `
+  <div class="eyebrow">Module ${m.number} of 4 &middot; ${m.slt} SLT &middot; Week ${m.number}</div>
+  <h1>${esc(m.title)}</h1>
+  <p class="driving-q">&ldquo;${m.drivingQuestion}&rdquo;</p>
+  ${renderJourneyMap(idx)}
+
+  <div class="card tight"><strong>By the end of this module, you can&hellip;</strong><p style="margin:.5em 0 0;">${m.outcome}</p></div>
+  <p><strong>Key concepts:</strong> ${m.keyConcepts}</p>
+
+  <div class="stage">
+    <div class="stage-label"><span class="dot"></span>You are here &middot; why this matters</div>
+    ${renderScenario(m.scenario)}
+  </div>
+  `;
+
+  if(m.priorKnowledge){
+    html += `<div class="stage">
+      <div class="stage-label"><span class="dot"></span>What you already know</div>
+      ${renderPriorKnowledge(m)}
+    </div>`;
+  }
+
+  html += `<div class="stage">
+    <div class="stage-label"><span class="dot"></span>Learn one idea &middot; concept learning</div>
+    ${m.concepts.map(c => `<h3>${esc(c.heading)}</h3>${c.body}`).join("")}
+  </div>
+
+  <div class="stage">
+    <div class="stage-label"><span class="dot"></span>See it done &middot; worked example</div>
+    <div class="worked-example"><span class="tag">Greenfield Training Centre</span>${m.workedExample}</div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-label"><span class="dot"></span>Try it yourself &middot; guided activity</div>
+    ${m.guidedActivityIntro}
+    ${renderTool(m.tool)}
+  </div>`;
+
+  if(m.criticalThinking){
+    html += `<div class="stage">${renderCriticalThinking(m)}</div>`;
+  }
+
+  html += `<div class="stage">
+    <div class="stage-label"><span class="dot"></span>Check your thinking &middot; self-check</div>
+    ${m.selfCheck.map((q,i) => registerQuiz(q, m.id+"-sc-"+i)).join("")}
+  </div>`;
+
+  if(m.recovery){
+    html += `<div class="stage">${renderRecovery(m)}</div>`;
+  }
+
+  html += `<div class="stage">
+    <div class="stage-label"><span class="dot"></span>Apply it to your organisation &middot; reflection and transfer</div>
+    ${renderReflection(m)}
+  </div>
+
+  <div class="stage">
+    <div class="stage-label"><span class="dot"></span>Capture evidence &middot; module output</div>
+    <div class="callout good"><strong>${esc(m.output.title)}</strong><p style="margin:.5em 0 0;">${m.output.description}</p></div>
+  </div>`;
+
+  if(m.readiness){
+    html += renderReadiness(m);
+  }
+
+  html += `<div class="btn-row">
+    ${idx>0 ? `<button class="btn secondary" onclick="navigateTo('${courseData.modules[idx-1].id}')">&larr; Back to Module ${idx}</button>` : `<button class="btn secondary" onclick="navigateTo('home')">&larr; Back to Course Home</button>`}
+    <button class="btn" onclick="navigateTo('${idx<3 ? courseData.modules[idx+1].id : "complete"}')">${idx<3 ? "Continue to Module "+(idx+2) : "Go to Course Completion"} &rarr;</button>
+  </div>
+  ${renderCourseFooter()}`;
+
+  return html;
+}
+
+function renderScenario(s){
+  return `<div class="scenario"><span class="quote-mark">&ldquo;</span>${s.quote}
+    ${s.note ? `<p style="margin:.8em 0 0;">${s.note}</p>` : ""}
+  </div>`;
+}
+
+/* Prior-knowledge classification: click an item to reveal explanatory feedback (ungraded) */
+function renderPriorKnowledge(m){
+  const pk = m.priorKnowledge;
+  const itemsHtml = pk.items.map((it, i) => {
+    const id = m.id + "-pk-" + i;
+    const revealed = state.checklists[id];
+    return `<div class="card tight" style="margin:.7em 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6em;">
+        <strong>${esc(it.label)}</strong>
+        <button class="small-btn" onclick="state.checklists['${id}']=true; document.getElementById('pkfeedback-${id}').style.display='block'; this.style.display='none';">${revealed ? "" : "Why does this matter?"}</button>
+      </div>
+      <div id="pkfeedback-${id}" class="quiz-feedback correct" style="display:${revealed?"block":"none"};margin-top:.7em;">${it.feedback}</div>
+    </div>`;
+  }).join("");
+  return `<p>${pk.intro}</p>${itemsHtml}`;
+}
+
+function renderCriticalThinking(m){
+  const ct = m.criticalThinking;
+  return `<div class="stage-label"><span class="dot"></span>Critical thinking &middot; before you move on</div>
+    <div class="callout"><strong>${esc(ct.prompt)}</strong>
+    <p style="margin:.8em 0 0;">${ct.question}</p></div>
+    ${registerQuiz(ct.quiz, m.id+"-ct")}`;
+}
+
+function renderRecovery(m){
+  return `<div class="callout data"><strong>Stuck on the calculation?</strong><p style="margin:.6em 0 0;">${m.recovery}</p></div>`;
+}
+
+function renderReflection(m){
+  return m.reflection.prompts.map((p, i) => {
+    const id = m.id + "-refl-" + i;
+    const val = state.reflections[id] || "";
+    return `<div class="field"><label>${esc(p)}</label>
+      <textarea onchange="state.reflections['${id}']=this.value;">${esc(val)}</textarea>
+    </div>`;
+  }).join("");
+}
+
+function renderReadiness(m){
+  return `<div class="readiness"><h3>Readiness checkpoint</h3>
+    <p>You are ready for the next module when you can answer these questions with confidence:</p>
+    <ul>${m.readiness.map(q => `<li>${esc(q)}</li>`).join("")}</ul>
+  </div>`;
+}
+
+function renderTool(toolName){
+  if(toolName === "boundary") return renderBoundaryTool();
+  if(toolName === "baseline") return renderBaselineTool();
+  if(toolName === "actions") return renderActionsTool();
+  if(toolName === "roadmap") return renderRoadmapTool();
+  return "";
+}
+
+/* ============================================================
+   TOOL 1 — ORGANISATIONAL CARBON BOUNDARY MAP  (Module 1)
+   ============================================================ */
+const BOUNDARY_SOURCES = [
+  { key:"electricity", label:"Grid electricity", hint:"Scope 2 &middot; almost always in-boundary" },
+  { key:"vehicles", label:"Company vehicles (petrol/diesel)", hint:"Scope 1 &middot; include if you own or lease the fleet" },
+  { key:"refrigerants", label:"Refrigerants (air-conditioning, cold storage)", hint:"Scope 1 &middot; often overlooked, can be material" },
+  { key:"travel", label:"Employee business travel", hint:"Scope 3 &middot; flights, trains, mileage claims" },
+  { key:"waste", label:"Waste sent off-site", hint:"Scope 3 &middot; landfill, incineration or recycling" },
+  { key:"purchased", label:"Purchased goods and services", hint:"Scope 3 &middot; usually the hardest to quantify well &mdash; note as a future refinement rather than blocking your first pathway" }
+];
+
+function renderBoundaryTool(){
+  const b = state.boundary;
+  const rows = BOUNDARY_SOURCES.map(src => {
+    const checked = !!b.included[src.key];
+    const dataSrc = b.dataSource[src.key] || "";
+    return `<div class="card tight" style="margin:.6em 0;">
+      <label style="display:flex;align-items:flex-start;gap:.6em;font-weight:600;color:var(--ink);cursor:pointer;">
+        <input type="checkbox" style="width:auto;margin-top:.3em;accent-color:var(--green-deep);" ${checked?"checked":""}
+          onchange="state.boundary.included['${src.key}']=this.checked; render();">
+        <span>${src.label}<br><span class="field hint" style="margin-top:.15em;display:block;">${src.hint}</span></span>
+      </label>
+      ${checked ? `<div class="field" style="margin:.8em 0 0 2em;">
+        <label>Likely data source</label>
+        <input type="text" placeholder="e.g. utility bills from finance, fuel cards, facilities log"
+          value="${esc(dataSrc)}" onchange="state.boundary.dataSource['${src.key}']=this.value;">
+      </div>` : ""}
+    </div>`;
+  }).join("");
+
+  const includedList = BOUNDARY_SOURCES.filter(s => b.included[s.key]);
+
+  return `<div class="tool-panel">
+    <div class="tool-header"><h4>Organisational Carbon Boundary Map</h4></div>
+    <div class="grid-2">
+      <div class="field"><label>Organisation / unit being assessed</label>
+        <input type="text" value="${esc(b.orgName)}" placeholder="e.g. Greenfield Training Centre, Head Office site"
+          onchange="state.boundary.orgName=this.value;">
+      </div>
+      <div class="field"><label>Reporting period</label>
+        <input type="text" value="${esc(b.period)}" placeholder="e.g. Jan&ndash;Dec 2025"
+          onchange="state.boundary.period=this.value;">
+      </div>
+    </div>
+    <div class="field"><label>Sites / facilities included</label>
+      <textarea placeholder="List the physical sites, buildings or operations this boundary covers." onchange="state.boundary.sites=this.value;">${esc(b.sites)}</textarea>
+    </div>
+    <h4 style="margin-top:1.4em;">Which emission sources belong inside this boundary?</h4>
+    ${rows}
+    <div class="callout data" style="margin-top:1.2em;">
+      <strong>Your boundary map so far</strong>
+      ${includedList.length ? `<ul style="margin:.6em 0 0;">${includedList.map(s=>`<li>${esc(s.label)}${b.dataSource[s.key] ? ` &mdash; data from: ${esc(b.dataSource[s.key])}` : " &mdash; data source not yet noted"}</li>`).join("")}</ul>`
+      : `<p style="margin:.6em 0 0;">Tick at least one source above to start building your map.</p>`}
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   TOOL 2 — CARBON BASELINE CALCULATOR  (Module 2)
+   ============================================================ */
+function ensureBaselineRows(){
+  if(state.baseline.rows.length === 0){
+    ["electricity","petrol","diesel","flights","waste"].forEach(key => {
+      const ef = EMISSION_FACTORS[key];
+      state.baseline.rows.push({
+        id: uid("row"), categoryKey: key, customLabel: "",
+        activityData: "", unit: ef.unit, factor: ef.factor, confidence: ef.defaultConfidence
+      });
+    });
+  }
+}
+
+function baselineRowEmissions(row){
+  const ad = parseFloat(row.activityData);
+  if(isNaN(ad)) return 0;
+  return (ad * row.factor) / 1000; // kg -> tonnes CO2e
+}
+
+function renderBaselineTool(){
+  ensureBaselineRows();
+  const rows = state.baseline.rows;
+  const total = rows.reduce((sum, r) => sum + baselineRowEmissions(r), 0);
+
+  const rowsHtml = rows.map(r => {
+    const ef = EMISSION_FACTORS[r.categoryKey];
+    const label = r.categoryKey === "custom" ? r.customLabel : ef.label;
+    const emissions = baselineRowEmissions(r);
+    return `<tr>
+      <td style="min-width:170px;">
+        ${r.categoryKey === "custom"
+          ? `<input type="text" value="${esc(r.customLabel)}" placeholder="Category name" onchange="updateBaselineRow('${r.id}','customLabel',this.value)">`
+          : `<strong>${esc(label)}</strong>`}
+      </td>
+      <td style="min-width:110px;"><input type="number" min="0" step="any" value="${esc(r.activityData)}" placeholder="0"
+          onchange="updateBaselineRow('${r.id}','activityData',this.value)"></td>
+      <td style="min-width:90px;">${esc(r.unit)}</td>
+      <td style="min-width:130px;"><input type="number" min="0" step="any" value="${esc(r.factor)}"
+          onchange="updateBaselineRow('${r.id}','factor',this.value)">
+          <div class="field hint" style="margin-top:.2em;">kg CO2e/unit</div></td>
+      <td style="min-width:120px;">
+        <select onchange="updateBaselineRow('${r.id}','confidence',this.value)">
+          ${["High","Medium","Low"].map(c => `<option value="${c}" ${r.confidence===c?"selected":""}>${c}</option>`).join("")}
+        </select>
+      </td>
+      <td style="text-align:right;font-weight:700;min-width:100px;">${fmt(emissions,2)} t</td>
+      <td><button class="remove-row" onclick="removeBaselineRow('${r.id}')" title="Remove row">&#10005;</button></td>
+    </tr>
+    <tr><td colspan="7" style="border-top:none;padding-top:0;"><span class="field hint">${esc(ef.source)}</span></td></tr>`;
+  }).join("");
+
+  return `<div class="tool-panel">
+    <div class="tool-header"><h4>Carbon Baseline Calculator</h4>
+      <button class="small-btn" onclick="addBaselineRow()">+ Add another activity</button>
+    </div>
+    <div style="overflow-x:auto;">
+    <table>
+      <tr><th>Activity</th><th>Activity data</th><th>Unit</th><th>Emission factor</th><th>Confidence</th><th style="text-align:right;">Emissions</th><th></th></tr>
+      ${rowsHtml}
+    </table>
+    </div>
+    <div class="card" style="background:var(--green-soft);border-color:var(--green);">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;">
+        <strong style="font-size:1.05rem;">Estimated total baseline footprint</strong>
+        <span style="font-size:1.5rem;font-weight:700;color:var(--green-deep);">${fmt(total,2)} tCO2e</span>
+      </div>
+    </div>
+    <h4>Where your emissions are coming from</h4>
+    <div id="baseline-bars"></div>
+    <p class="field hint">Emission factors are pre-filled with published defaults where available (see the source note under each row) but every figure is editable &mdash; if you have a verified factor for your own country, fuel supplier or waste contractor, use it and mark that row High confidence.</p>
+  </div>`;
+}
+
+function addBaselineRow(){
+  state.baseline.rows.push({ id: uid("row"), categoryKey:"custom", customLabel:"", activityData:"", unit:"units", factor:1, confidence:"Low" });
+  render();
+}
+function removeBaselineRow(id){
+  state.baseline.rows = state.baseline.rows.filter(r => r.id !== id);
+  render();
+}
+function updateBaselineRow(id, field, value){
+  const row = state.baseline.rows.find(r => r.id === id);
+  if(!row) return;
+  if(field === "activityData" || field === "factor") row[field] = value;
+  else row[field] = value;
+  render();
+}
+
+function renderBaselineBars(){
+  const el = document.getElementById("baseline-bars");
+  if(!el) return;
+  const rows = state.baseline.rows
+    .map(r => ({ label: r.categoryKey==="custom" ? (r.customLabel||"Custom") : EMISSION_FACTORS[r.categoryKey].label, val: baselineRowEmissions(r) }))
+    .filter(r => r.val > 0)
+    .sort((a,b) => b.val - a.val);
+  if(rows.length === 0){ el.innerHTML = `<p class="field hint">Enter activity data above to see your top sources.</p>`; return; }
+  const max = rows[0].val;
+  el.innerHTML = rows.map(r => `<div class="bar-row">
+    <div class="bar-label">${esc(r.label)}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${Math.max(4,(r.val/max)*100)}%;"></div></div>
+    <div class="bar-val">${fmt(r.val,2)} t</div>
+  </div>`).join("");
+}
+
+/* ============================================================
+   TOOL 3 — CARBON ACTION PRIORITISATION MATRIX  (Module 3)
+   ============================================================ */
+const SCALE_IMPACT = {"High":3,"Medium":2,"Low":1};
+const SCALE_COST = {"Low":3,"Medium":2,"High":1.5,"Very high":1};
+const SCALE_FEASIBILITY = {"High":3,"Medium":2,"Low":1};
+const SCALE_TIME = {"Short":3,"Medium":2,"Long":1};
+
+function actionScore(a){
+  return (SCALE_IMPACT[a.impact]||0) + (SCALE_COST[a.cost]||0) + (SCALE_FEASIBILITY[a.feasibility]||0) + (SCALE_TIME[a.time]||0);
+}
+function actionPriorityLabel(score){
+  if(score >= 9) return "High";
+  if(score >= 6) return "Medium";
+  return "Low";
+}
+
+function ensureActionRows(){
+  if(state.actions.rows.length === 0){
+    ["LED lighting upgrade","Optimise HVAC settings and schedule","Rooftop solar PV"].forEach(name => {
+      state.actions.rows.push({ id: uid("act"), name, impact:"Medium", cost:"Medium", feasibility:"Medium", time:"Medium", rationale:"" });
+    });
+  }
+}
+
+function renderActionsTool(){
+  ensureActionRows();
+  const rows = state.actions.rows;
+  const selected = state.actions.selectedIds;
+
+  const rowsHtml = rows.map(a => {
+    const score = actionScore(a);
+    const priority = actionPriorityLabel(score);
+    const isSel = selected.includes(a.id);
+    return `<tr>
+      <td style="min-width:190px;"><input type="text" value="${esc(a.name)}" placeholder="Action name" onchange="updateActionRow('${a.id}','name',this.value)"></td>
+      ${["impact","cost","feasibility","time"].map(field => {
+        const opts = field==="cost" ? ["Low","Medium","High","Very high"] : (field==="time" ? ["Short","Medium","Long"] : ["High","Medium","Low"]);
+        return `<td style="min-width:110px;"><select onchange="updateActionRow('${a.id}','${field}',this.value)">
+          ${opts.map(o => `<option value="${o}" ${a[field]===o?"selected":""}>${o}</option>`).join("")}
+        </select></td>`;
+      }).join("")}
+      <td style="text-align:center;"><span class="priority-${priority}">${priority}</span></td>
+      <td style="text-align:center;">
+        <input type="checkbox" style="width:auto;" ${isSel?"checked":""} ${(!isSel && selected.length>=3)?"disabled":""}
+          onchange="toggleActionSelect('${a.id}', this.checked)" title="Select as one of your three priority actions">
+      </td>
+      <td><button class="remove-row" onclick="removeActionRow('${a.id}')">&#10005;</button></td>
+    </tr>
+    <tr><td colspan="8" style="border-top:none;padding-top:0;">
+      <input type="text" style="font-size:.85rem;" value="${esc(a.rationale)}" placeholder="Rationale: why this score, and why act now or later?"
+        onchange="updateActionRow('${a.id}','rationale',this.value)">
+    </td></tr>`;
+  }).join("");
+
+  return `<div class="tool-panel">
+    <div class="tool-header"><h4>Carbon Action Prioritisation Matrix</h4>
+      <button class="small-btn" onclick="addActionRow()">+ Add another action</button>
+    </div>
+    <div style="overflow-x:auto;">
+    <table>
+      <tr><th>Action</th><th>Carbon impact</th><th>Cost</th><th>Feasibility</th><th>Time</th><th>Priority</th><th>Select top 3</th><th></th></tr>
+      ${rowsHtml}
+    </table>
+    </div>
+    <p class="field hint">Priority is calculated from impact, cost, feasibility and implementation time together &mdash; not carbon impact alone, so a high-impact but very expensive, low-feasibility action will not automatically rank top. Tick the checkbox on your three chosen priority actions; these carry forward into your Module 4 roadmap.</p>
+    <p class="field hint">Selected so far: ${selected.length} / 3</p>
+  </div>`;
+}
+
+function addActionRow(){
+  state.actions.rows.push({ id: uid("act"), name:"", impact:"Medium", cost:"Medium", feasibility:"Medium", time:"Medium", rationale:"" });
+  render();
+}
+function removeActionRow(id){
+  state.actions.rows = state.actions.rows.filter(a => a.id !== id);
+  state.actions.selectedIds = state.actions.selectedIds.filter(sid => sid !== id);
+  render();
+}
+function updateActionRow(id, field, value){
+  const row = state.actions.rows.find(a => a.id === id);
+  if(!row) return;
+  row[field] = value;
+  render();
+}
+function toggleActionSelect(id, checked){
+  if(checked){
+    if(state.actions.selectedIds.length < 3) state.actions.selectedIds.push(id);
+  } else {
+    state.actions.selectedIds = state.actions.selectedIds.filter(sid => sid !== id);
+  }
+  render();
+}
+
+/* ============================================================
+   TOOL 4 — ONE-PAGE NET-ZERO ROADMAP  (Module 4)
+   ============================================================ */
+function renderRoadmapTool(){
+  const baselineTotal = state.baseline.rows.reduce((sum,r) => sum + baselineRowEmissions(r), 0);
+  const hotspots = state.baseline.rows
+    .map(r => ({ label: r.categoryKey==="custom" ? (r.customLabel||"Custom") : EMISSION_FACTORS[r.categoryKey].label, val: baselineRowEmissions(r) }))
+    .filter(r => r.val > 0).sort((a,b)=>b.val-a.val).slice(0,3);
+
+  const selectedActions = state.actions.rows.filter(a => state.actions.selectedIds.includes(a.id));
+  const rm = state.roadmap;
+
+  const actionCards = selectedActions.length ? selectedActions.map((a,i) => {
+    const detail = rm.actionDetails[a.id] || { cost:"", timeline:"" };
+    return `<tr>
+      <td><strong>Priority Action ${i+1}</strong><br>${esc(a.name)}</td>
+      <td>${actionPriorityLabel(actionScore(a))} impact / ${esc(a.cost)} cost / ${esc(a.feasibility)} feasibility</td>
+      <td><input type="text" placeholder="e.g. RM 8,000" value="${esc(detail.cost)}" onchange="updateRoadmapActionDetail('${a.id}','cost',this.value)"></td>
+      <td><input type="text" placeholder="e.g. 3 months" value="${esc(detail.timeline)}" onchange="updateRoadmapActionDetail('${a.id}','timeline',this.value)"></td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="4" style="text-align:center;color:var(--ink-soft);">Go back to Module 3 and select up to three priority actions &mdash; they will appear here automatically.</td></tr>`;
+
+  return `<div class="tool-panel no-print">
+    <div class="tool-header"><h4>One-Page Net-Zero Roadmap builder</h4>
+      <button class="btn secondary" onclick="window.print()">&#128438; Print / save as PDF</button>
+    </div>
+
+    <div class="roadmap-sheet" id="roadmap-sheet">
+      <div class="roadmap-title">
+        <h2>Net-Zero Roadmap</h2>
+        <p style="margin:0;color:var(--ink-soft);">${esc(state.boundary.orgName) || "[ Organisation name &mdash; complete in Module 1 ]"} &middot; ${esc(state.boundary.period) || "[ reporting period ]"}</p>
+      </div>
+
+      <table>
+        <tr><th style="width:32%;">Baseline</th><td>Estimated current footprint: <strong>${fmt(baselineTotal,2)} tCO2e</strong></td></tr>
+        <tr><th>Hotspots</th><td>${hotspots.length ? hotspots.map(h=>`${esc(h.label)} (${fmt(h.val,2)} t)`).join(", ") : "[ complete Module 2 to populate ]"}</td></tr>
+      </table>
+
+      <h4 style="margin-top:1.3em;">Priority actions</h4>
+      <table>
+        <tr><th>Action</th><th>Basis</th><th>Indicative cost</th><th>Timeline</th></tr>
+        ${actionCards}
+      </table>
+
+      <div class="field" style="margin-top:1.2em;"><label>Longer-term direction (next-stage interventions beyond these three actions)</label>
+        <textarea onchange="state.roadmap.longerTerm=this.value;">${esc(rm.longerTerm)}</textarea>
+      </div>
+
+      <div class="field"><label>Monitoring indicators (2&ndash;4)</label>
+        <div class="grid-2">
+          ${[0,1,2,3].map(i => `<input type="text" placeholder="Indicator ${i+1}" value="${esc(rm.monitoring[i]||"")}" onchange="updateRoadmapMonitoring(${i}, this.value)" style="margin-bottom:.5em;">`).join("")}
+        </div>
+      </div>
+
+      <div class="field"><label>Review point &mdash; when progress will be reassessed</label>
+        <input type="text" placeholder="e.g. Q2 next year, at the next management review" value="${esc(rm.reviewPoint)}" onchange="state.roadmap.reviewPoint=this.value;">
+      </div>
+    </div>
+  </div>`;
+}
+
+function updateRoadmapActionDetail(actionId, field, value){
+  if(!state.roadmap.actionDetails[actionId]) state.roadmap.actionDetails[actionId] = { cost:"", timeline:"" };
+  state.roadmap.actionDetails[actionId][field] = value;
+}
+function updateRoadmapMonitoring(i, value){
+  state.roadmap.monitoring[i] = value;
+}
+
+/* ============================================================
+   MODULE 1 CONTENT — Understand Your Starting Point
+   ============================================================ */
+courseData.modules.push({
+  id: "m1", number: 1, title: "Understand Your Starting Point", slt: "4 hours",
+  drivingQuestion: "What exactly are we trying to decarbonise?",
+  outcome: "define the boundary of the organisation being assessed and identify the major sources of emissions that should be included in an initial carbon baseline.",
+  keyConcepts: "organisational boundary, operational boundary, direct and indirect emissions, activity data, emission sources, baseline year, materiality and data availability.",
+  scenario: {
+    quote: "A 40-person company wants to announce that it will become net zero. The managing director asks the facilities manager one question: <em>&ldquo;What exactly are our emissions today?&rdquo;</em>",
+    note: "It is a fair question, and a genuinely hard one to answer on the spot. Before anyone can reduce emissions, plan a pathway or make a credible public announcement, somebody has to work out what is actually being measured. That is the whole job of this module, and it is why a baseline has to come before anything else."
+  },
+  priorKnowledge: {
+    intro: "Before we introduce any formal concepts, look at these familiar organisational activities. For each one, think about how easy or hard it would be to turn into an actual number. Then click through to see why.",
+    items: [
+      { label: "Grid electricity use", feedback: "This is usually the easiest source to quantify. Your utility provider already meters it and bills you in kilowatt-hours, so the activity data essentially arrives ready-made every month." },
+      { label: "Company vehicles (fuel use)", feedback: "Reasonably easy if you keep fuel cards or receipts, since litres purchased is a direct, countable figure. It gets harder if staff use personal vehicles and claim mileage, because now you are relying on self-reported records." },
+      { label: "Refrigerants (air-conditioning, cold storage)", feedback: "Often the most overlooked source, and surprisingly significant when it is relevant, because many refrigerant gases have a very high warming effect per kilogram. Data usually means servicing records showing how much refrigerant was topped up, which not every organisation tracks well." },
+      { label: "Employee travel (flights, trains)", feedback: "Moderately difficult. Travel bookings or expense claims exist, but pulling distance and mode of travel out of them consistently takes some work, and personal commuting is usually excluded from a first attempt." },
+      { label: "Waste sent off-site", feedback: "Often only an estimate is possible at first, based on bin collection frequency and skip size, unless your waste contractor provides tonnage reports. Precision here is genuinely difficult without contractor data." },
+      { label: "Purchased goods and services", feedback: "This is consistently the hardest category to quantify well. It touches almost everything the organisation buys, and doing it properly usually means supplier-level data most small organisations simply do not have yet. It is fine to note this as a future refinement rather than a Week 1 blocker." }
+    ]
+  },
+  concepts: [
+    { heading: "Organisation boundary, then emission source, then activity data, then carbon estimate",
+      body: `<p>Everything in this course follows one chain of logic, and it is worth fixing it in your mind now.</p>
+      <p><strong>Organisation boundary</strong> is the answer to &ldquo;what am I measuring?&rdquo; &mdash; which legal entity, site or set of operations counts. <strong>Emission sources</strong> are the specific activities inside that boundary that release greenhouse gases, such as electricity use or fuel combustion. <strong>Activity data</strong> is the raw number describing how much of that activity happened, such as kilowatt-hours or litres. Only once you have activity data can you produce a <strong>carbon estimate</strong>, by multiplying it against an emission factor, which is exactly what Module 2 does.</p>
+      <p>Get the boundary wrong and everything downstream is wrong too, no matter how careful your arithmetic is later. That is why this module comes first.</p>` },
+    { heading: "Scope 1, Scope 2 and selected Scope 3 sources",
+      body: `<p>Formal greenhouse gas accounting sorts emissions into three scopes. You do not need the full technical treatment for this course, but the basic distinction is genuinely useful.</p>
+      <p><strong>Scope 1</strong> covers direct emissions from sources your organisation owns or controls: fuel burned in your own vehicles, generators or boilers, and refrigerant leaks from your own equipment. <strong>Scope 2</strong> covers indirect emissions from purchased electricity, steam, heating or cooling. <strong>Scope 3</strong> covers everything else in your value chain: business travel, purchased goods, waste, and more. Scope 3 is the broadest and hardest category, which is why this course asks you to include only the Scope 3 sources that are both material and realistically measurable, such as travel and waste, rather than attempting the full picture on day one.</p>` },
+    { heading: "Baseline year, materiality and data availability",
+      body: `<p>Your <strong>baseline year</strong> is simply the reporting period your first estimate covers, usually the most recent full year or quarter for which you can get reasonable data. Everything you measure later gets compared back to this starting point, so pick a period you can actually document rather than an aspirational one.</p>
+      <p>Two practical filters help you decide what belongs inside your boundary: <strong>materiality</strong> (is this source likely to be a meaningful share of your footprint, or a rounding error?) and <strong>data availability</strong> (can you actually get a number for it without heroic effort?). A source that is material but has poor data availability, such as purchased goods, is worth flagging as an assumption rather than either ignoring it silently or letting it block your entire first pathway.</p>` }
+  ],
+  workedExample: `<p><strong>Greenfield Training Centre</strong> is a 40-person vocational training provider operating from one main building with a small annexe used for storage. As the facilities manager works through the boundary question, she makes a series of practical decisions rather than theoretical ones.</p>
+    <p>She includes the main building and annexe, both on one electricity meter, and excludes a shared car park she does not control. She includes the two minibuses Greenfield owns for transporting trainees, because fuel receipts exist, but decides employee commuting will wait for a later, more mature version of the exercise. She flags refrigerants from the building's air-conditioning system as in-scope but notes the servicing contractor will need to be asked for top-up records. She includes waste, using the skip contractor's collection frequency as a rough proxy since no tonnage report currently exists. She notes purchased goods and services as out of scope for this first pathway, with a one-line justification: data is not available and the effort required is disproportionate to a first estimate.</p>
+    <p>None of these decisions are the only correct answer. They are defensible, documented and realistic given what Greenfield can actually access this quarter. That is exactly the standard this course is asking of you.</p>`,
+  guidedActivityIntro: `<p>Now do the same thing for your own organisation. Work through the sources below, tick the ones that belong inside your boundary, and note where the data for each one would realistically come from. You do not need certainty, only a defensible starting position.</p>`,
+  tool: "boundary",
+  selfCheck: [
+    { question: "Should electricity purchased from the grid appear in your organisation's carbon baseline?",
+      options: [
+        { text: "No, because the organisation does not generate that electricity itself.", correct:false, feedback: "Not quite. Whether your organisation generates the electricity is beside the point. Scope 2 exists precisely because purchased electricity, heating or cooling is an indirect emission you are still responsible for through your consumption choices. It almost always belongs in the baseline." },
+        { text: "Yes, as a Scope 2 indirect emission, because the organisation's consumption drives the demand for that electricity to be generated.", correct:true, feedback: "Correct. Grid electricity is a textbook Scope 2 source. Your organisation does not burn the fuel itself, but your demand is what causes the emissions upstream at the power station, and utility bills usually make the activity data straightforward to obtain." },
+        { text: "Only if the organisation has its own solar panels.", correct:false, feedback: "Having solar panels affects how much grid electricity you draw, and any electricity you generate and use yourself would be handled separately, but it does not change whether purchased grid electricity itself belongs in the baseline. It does." }
+      ] }
+  ],
+  reflection: { prompts: [
+    "Which emission source does your organisation already have strong, reliable data for? Why is that data easy to get hold of?",
+    "Which emission source will most likely require an estimate or assumption rather than measured data, and who in your organisation might help you refine that estimate later?"
+  ]},
+  output: { title: "Organisation Carbon Boundary Map", description: "A one-page map showing your organisational boundary, the main emission sources you have chosen to include, and the likely source of data for each one. This carries forward directly into Module 2." },
+  readiness: [
+    "What organisation am I measuring?",
+    "What emission sources am I including?",
+    "Where will the data come from?"
+  ]
+});
+
+/* ============================================================
+   MODULE 2 CONTENT — Build Your Carbon Baseline
+   ============================================================ */
+courseData.modules.push({
+  id: "m2", number: 2, title: "Build Your Carbon Baseline", slt: "5 hours",
+  drivingQuestion: "Where are our emissions coming from?",
+  outcome: "calculate a practical baseline carbon footprint from organisational activity data.",
+  keyConcepts: "activity data, emission factor, carbon dioxide equivalent (CO2e), calculation logic, data quality, assumptions and uncertainty.",
+  scenario: {
+    quote: "You have your boundary map from Module 1. Now the facilities manager at Greenfield Training Centre has to turn a folder of bills, receipts and rough estimates into one defensible number.",
+    note: "This is the module where carbon accounting stops being an abstract idea and becomes arithmetic you can actually check. The good news is that the arithmetic itself is simple. The skill is being honest about what you know precisely and what you are estimating."
+  },
+  concepts: [
+    { heading: "The central relationship: Activity Data &times; Emission Factor = Estimated Emissions",
+      body: `<p>Almost every carbon calculation you will ever do, in this course or beyond it, comes down to one multiplication.</p>
+      <div class="callout" style="text-align:center;font-size:1.1rem;font-weight:700;color:var(--amber);">Activity Data &times; Emission Factor = Estimated Emissions</div>
+      <p><strong>Activity data</strong> is how much of something happened: 85,000 kilowatt-hours of electricity, 2,400 litres of petrol. An <strong>emission factor</strong> converts one unit of that activity into a mass of greenhouse gas, expressed in kilograms or tonnes of carbon dioxide equivalent per unit. Multiply the two together and you have an estimated emission figure for that activity. Do this for every source in your boundary and sum the results, and you have a baseline.</p>` },
+    { heading: "Why CO2e (carbon dioxide equivalent)?",
+      body: `<p>Different greenhouse gases trap heat with very different potency. A kilogram of methane or refrigerant gas is not equivalent to a kilogram of carbon dioxide in its warming effect. <strong>CO2e</strong> converts every gas onto one common scale, based on its warming potential relative to CO2, so that a mixed bag of electricity, fuel and refrigerant emissions can be added together into one meaningful total. Every emission factor in this course, and in virtually every published dataset you will use in future, is already expressed in CO2e terms.</p>` },
+    { heading: "Data quality: you do not need false precision",
+      body: `<p>A first carbon footprint does not need to pretend to have laboratory-grade accuracy. What it needs is transparency about where each number came from. For every activity you calculate, classify your confidence as <strong>High</strong> (an actual measured record, such as a metered utility bill), <strong>Medium</strong> (a reasonable organisational estimate, such as fuel spend divided by an average price per litre) or <strong>Low</strong> (a proxy or assumption, such as an industry-average waste figure applied to your headcount). This is not a weakness in your work. It is exactly the kind of honesty a credible first pathway requires, and it tells your future self, or an auditor, exactly where to focus effort on improving the data next time.</p>` }
+  ],
+  workedExample: `<p>Greenfield Training Centre's facilities manager pulled together the following activity data for the last full year:</p>
+    <table>
+      <tr><th>Source</th><th>Activity data</th><th>Emission factor</th><th>Estimated emissions</th></tr>
+      <tr><td>Grid electricity</td><td>85,000 kWh</td><td>0.740 kg CO2e/kWh</td><td><strong>62.90 tCO2e</strong></td></tr>
+      <tr><td>Petrol (minibuses)</td><td>2,400 litres</td><td>2.075 kg CO2e/litre</td><td><strong>4.98 tCO2e</strong></td></tr>
+      <tr><td>Diesel (generator)</td><td>1,100 litres</td><td>2.584 kg CO2e/litre</td><td><strong>2.84 tCO2e</strong></td></tr>
+      <tr><td>Business flights</td><td>18,000 passenger-km (from travel records)</td><td>0.150 kg CO2e/passenger-km</td><td><strong>2.70 tCO2e</strong></td></tr>
+      <tr><td>Waste (estimated)</td><td>8 tonnes/year</td><td>450 kg CO2e/tonne</td><td><strong>3.60 tCO2e</strong></td></tr>
+      <tr><td colspan="3" style="text-align:right;"><strong>Total baseline</strong></td><td><strong>77.02 tCO2e</strong></td></tr>
+    </table>
+    <p>Notice what the arithmetic reveals immediately: grid electricity is not just the largest source, it dwarfs everything else combined, at roughly 82% of the total. Petrol and waste are a distant second and third. This single observation, produced by nothing more complicated than five multiplications and a sum, already tells Greenfield almost everything it needs to know about where to focus in Module 3.</p>
+    <p>The facilities manager also recorded her confidence in each figure: <strong>High</strong> for electricity and petrol, since both come from metered bills and fuel receipts; <strong>Medium</strong> for diesel, based on generator run-hours rather than a direct meter; and <strong>Low</strong> for flights and waste, since both rely on estimates rather than measured records. That is a perfectly credible first baseline.</p>`,
+  guidedActivityIntro: `<p>Use the calculator below to build your own baseline. The standard categories are pre-filled with default emission factors so you are not starting from a blank spreadsheet &mdash; enter your own activity data, adjust any factor you have a better local figure for, and rate your confidence in each line honestly.</p>`,
+  tool: "baseline",
+  selfCheck: [
+    { question: "Organisation A has very high electricity use but no company vehicles. Organisation B has moderate electricity use but a large diesel fleet. Would the same reduction strategy make sense for both?",
+      options: [
+        { text: "Yes, both should start with rooftop solar, since renewable electricity is always the best first step.", correct:false, feedback: "Not necessarily. Solar addresses Organisation A's dominant source directly, but for Organisation B, where the diesel fleet may be the larger share of the footprint, solar would leave the actual hotspot almost untouched. A reduction strategy has to follow the baseline, not a general assumption about what &ldquo;good&rdquo; looks like." },
+        { text: "No. Organisation A's baseline is dominated by electricity, so efficiency and renewable procurement matter most there, while Organisation B's baseline is dominated by fuel, so fleet-related actions matter most there.", correct:true, feedback: "Correct. This is exactly the point of building a baseline before jumping to actions. The same generic advice, such as &ldquo;go solar&rdquo; or &ldquo;switch to electric vehicles,&rdquo; will have completely different impact depending on where each organisation's emissions actually sit. Module 3 builds directly on this logic." },
+        { text: "It depends only on which organisation has more money to spend.", correct:false, feedback: "Cost is one factor in Module 3's prioritisation matrix, but it is not the deciding factor here. The more fundamental issue is that the two organisations have different emission profiles, so the same action would have very different carbon impact for each of them regardless of budget." }
+      ] }
+  ],
+  recovery: `If your numbers are not adding up, or you are unsure whether you have applied a factor correctly, work through it in this order: re-read the worked example above line by line, check that your activity data and emission factor are both in matching units (for example, do not mix litres and kilograms), and confirm you have divided by 1,000 if your factor is in kilograms but you want a result in tonnes. If you are still stuck, try re-entering Greenfield's own figures into the calculator above and check you can reproduce 77.02 tCO2e before returning to your own data.`,
+  reflection: { prompts: [
+    "Which of your baseline figures are you most confident in, and which would you flag as needing improvement before you would present this to management?",
+    "Did anything in your own baseline surprise you, in the way that electricity dominating Greenfield's total might surprise someone who assumed vehicle fuel would be the biggest source?"
+  ]},
+  output: { title: "Baseline Carbon Footprint", description: "Your total estimated footprint, a breakdown by emission category, your top three sources by size, and the confidence rating and assumptions behind each figure. This is the evidence base for everything in Module 3." }
+});
+
+/* ============================================================
+   MODULE 3 CONTENT — Find and Prioritise Reduction Opportunities
+   ============================================================ */
+courseData.modules.push({
+  id: "m3", number: 3, title: "Find and Prioritise Reduction Opportunities", slt: "4.5 hours",
+  drivingQuestion: "What should we tackle first?",
+  outcome: "identify and evaluate practical carbon-reduction opportunities and select three priority actions.",
+  keyConcepts: "carbon hotspot, reduction potential, implementation cost, operational feasibility, payback considerations, implementation time and co-benefits.",
+  scenario: {
+    quote: "Greenfield now knows that grid electricity is roughly 82% of its footprint. Knowing that is not the same as knowing what to do about it.",
+    note: "This is where the course shifts from carbon accounting to decision-making, and it is arguably the module where a good plan and a wish list part ways. A wish list ranks actions by how green they sound. A plan ranks them by impact, cost, feasibility and time, together."
+  },
+  concepts: [
+    { heading: "A carbon hotspot is not automatically the right first move",
+      body: `<p>Your baseline tells you where the emissions are. It does not automatically tell you where to act first. A <strong>carbon hotspot</strong>, the largest source in your baseline, is the natural place to start looking, but the actual best first action depends on more than size alone: how much of that hotspot a given action can realistically reduce (its <strong>reduction potential</strong>), how much it costs to implement, how operationally <strong>feasible</strong> it is given your constraints, how long it takes, and what other benefits it might bring alongside the carbon reduction, known as <strong>co-benefits</strong> (lower running costs, improved comfort, better staff retention, and so on).</p>` },
+    { heading: "Four dimensions, not one",
+      body: `<p>Every action you consider in this module gets scored on four dimensions, not just carbon impact: <strong>Impact</strong> (how much of your footprint this genuinely addresses), <strong>Cost</strong> (capital and ongoing cost to implement), <strong>Feasibility</strong> (can you actually do this given ownership, approvals, skills and disruption to operations), and <strong>Time</strong> (how long from decision to measurable effect). A high-impact action that scores badly on cost, feasibility and time may still rank below a moderate-impact action that your organisation can actually deliver next quarter. That is a feature of the method, not a flaw in it.</p>` }
+  ],
+  workedExample: `<p>For Greenfield Training Centre, the facilities manager generated a shortlist of possible interventions: an LED lighting upgrade, air-conditioning (HVAC) optimisation, rooftop solar PV, fleet rationalisation, renewable electricity procurement and a business-travel policy. Rather than simply ranking these by which saves the most carbon, she scored three of them across all four dimensions:</p>
+    <table>
+      <tr><th>Action</th><th>Carbon impact</th><th>Cost</th><th>Ease</th><th>Time</th><th>Priority</th></tr>
+      <tr><td>Optimise HVAC settings and schedule</td><td>Medium</td><td>Low</td><td>High</td><td>Short</td><td><span class="priority-High">High</span></td></tr>
+      <tr><td>Rooftop solar PV</td><td>High</td><td>High</td><td>Medium</td><td>Medium</td><td><span class="priority-High">High</span></td></tr>
+      <tr><td>Replace entire vehicle fleet</td><td>High</td><td>Very high</td><td>Low</td><td>Long</td><td><span class="priority-Medium">Medium</span></td></tr>
+    </table>
+    <p>Notice that replacing the entire fleet has the same carbon-impact rating as solar, but its very high cost, low feasibility and long timeline pull its overall priority down. HVAC optimisation, despite only a medium carbon impact, comes out as a genuine near-term priority because it is cheap, easy and fast. This is precisely why the matrix scores four dimensions rather than ranking by carbon impact alone.</p>`,
+  guidedActivityIntro: `<p>Generate five to eight possible reduction measures for your own organisation, informed by the hotspots your Module 2 baseline revealed. Score each one, then select your three priority actions using the checkboxes. Three prefilled example rows are there to get you started &mdash; edit or delete them freely.</p>`,
+  tool: "actions",
+  criticalThinking: {
+    prompt: "“Install solar panels immediately.”",
+    question: "It sounds decisive, and solar is genuinely popular for good reason. Is it necessarily your organisation's best first action?",
+    quiz: { question: "What does the right answer actually depend on?",
+      options: [
+        { text: "Nothing in particular. Solar is always the correct first move for any organisation serious about net zero.", correct:false, feedback: "This is the trap the question is designed to expose. Solar can be an excellent action, but &ldquo;always correct regardless of circumstances&rdquo; is exactly the kind of thinking a proper prioritisation matrix is built to prevent." },
+        { text: "It depends on the baseline, whether the organisation owns the building and roof, available roof area, the electricity consumption profile, cost, and what other efficiency opportunities are competing for the same budget.", correct:true, feedback: "Correct. An organisation that leases its premises may not be able to install solar at all. One with a small roof and a large electricity load may only offset a fraction of consumption. One that has not yet fixed a leaking HVAC system may be paying to generate power it is currently wasting. None of this makes solar a bad idea. It makes it one option to be scored fairly against the others, not an automatic first move." },
+        { text: "It depends only on how much carbon the panels would offset.", correct:false, feedback: "Carbon offset potential is one input, and often a strong one for solar, but cost, feasibility, building ownership and competing priorities all affect whether it is genuinely the best first action for a specific organisation right now." }
+      ] }
+  },
+  selfCheck: [
+    { question: "An action has the highest carbon-impact score of anything on your list, but also the highest cost, lowest feasibility and longest timeline. What should happen to it in your prioritisation matrix?",
+      options: [
+        { text: "It should automatically be selected as a priority action, because carbon impact is what matters most.", correct:false, feedback: "Carbon impact matters, but it is only one of four dimensions the matrix deliberately scores together. An action nobody can actually deliver does not reduce any emissions at all, however large it looks on paper." },
+        { text: "Its overall priority score should be pulled down by the cost, feasibility and time scores, even though its impact is high, and it may still be worth keeping on a longer-term list.", correct:true, feedback: "Correct. This is exactly what the weighted scoring is designed to do. A high-impact, low-feasibility action often belongs in your roadmap's &ldquo;longer-term direction&rdquo; section in Module 4, rather than as one of your three near-term priority actions." },
+        { text: "It should be removed from the list entirely, since it clearly is not going to happen.", correct:false, feedback: "Not necessarily removed, just not prioritised for immediate action. It is still useful information for the longer-term direction section of your Module 4 roadmap, so it is usually better to keep it visible rather than deleting it." }
+      ] }
+  ],
+  reflection: { prompts: [
+    "Which action ranked lower than you initially expected once cost, feasibility and time were factored in, and why?",
+    "If one constraint in your organisation changed, such as gaining ownership of your building or a larger budget, which action would move up your priority list?"
+  ]},
+  output: { title: "Three Priority Carbon-Reduction Actions", description: "For each of your three selected actions: estimated carbon benefit, indicative cost, approximate implementation period, and the rationale behind choosing it now rather than later. These carry forward directly into your Module 4 roadmap." }
+});
+
+/* ============================================================
+   MODULE 4 CONTENT — Build Your Net-Zero Roadmap
+   ============================================================ */
+courseData.modules.push({
+  id: "m4", number: 4, title: "Build Your Net-Zero Roadmap", slt: "4.5 hours",
+  drivingQuestion: "How do we turn analysis into an actionable pathway?",
+  outcome: "synthesise your baseline and selected actions into a one-page net-zero roadmap.",
+  keyConcepts: "near-term action, medium-term action, long-term transition, target-setting, responsibility, milestones, monitoring and review.",
+  scenario: {
+    quote: `Consider two plans a facilities manager could bring to management.<br><br>
+      <strong>Plan A:</strong> &ldquo;Reduce carbon emissions. Install solar. Encourage recycling. Become net zero by 2040.&rdquo;<br><br>
+      <strong>Plan B:</strong> A baseline figure, quantified priorities, dates, owners, costs and indicators.`,
+    note: "Which plan could management actually act on next Monday morning? Plan A is not wrong, exactly, but there is nothing in it anyone could put in a calendar, a budget line or a job description. Everything you have built across the last three modules exists to make sure your plan looks like Plan B."
+  },
+  concepts: [
+    { heading: "Near-term, medium-term and long-term action",
+      body: `<p>A credible roadmap sequences actions across time rather than listing them as one undifferentiated pile. <strong>Near-term actions</strong> are the three priority actions from Module 3, things you can begin within roughly the next few months. <strong>Medium-term actions</strong> are the ones that scored well on impact but need more lead time, budget cycles or approvals. <strong>Long-term transition</strong> covers the structural shifts, such as fleet electrification or a full renewable electricity contract, that depend on near-term actions succeeding first, or on external factors like available financing or grid infrastructure maturing.</p>` },
+    { heading: "Target-setting, responsibility and milestones",
+      body: `<p>A roadmap that says &ldquo;net zero by 2040&rdquo; without anything in between is a slogan, not a plan. Effective target-setting breaks a long-term ambition into <strong>milestones</strong> your organisation can check itself against well before the final date, each ideally with a named <strong>owner</strong>, someone in your organisation whose job includes making sure it actually happens. Responsibility that sits with &ldquo;the organisation&rdquo; in the abstract tends to sit with nobody in practice.</p>` },
+    { heading: "Monitoring and review are part of the plan, not an afterthought",
+      body: `<p>A roadmap without a review point is a plan you write once and forget. Choosing two to four <strong>monitoring indicators</strong>, simple, trackable measures such as monthly electricity use, litres of fuel purchased, or percentage of waste diverted from landfill, and setting a specific <strong>review point</strong>, such as a date or a recurring management meeting, turns your roadmap into something that stays alive after this course ends.</p>` }
+  ],
+  workedExample: `<p>Here is Greenfield Training Centre's completed one-page roadmap, built directly from the baseline and prioritisation work in the previous two modules.</p>
+    <table>
+      <tr><th style="width:28%;">Element</th><th>Greenfield's entry</th></tr>
+      <tr><td>Baseline</td><td>77.02 tCO2e (year 1)</td></tr>
+      <tr><td>Hotspots</td><td>Grid electricity (62.90 t, ~82%), petrol (4.98 t), waste (3.60 t)</td></tr>
+      <tr><td>Priority Action 1</td><td>Optimise HVAC settings and schedule &mdash; medium impact, low cost, 6&ndash;8 weeks</td></tr>
+      <tr><td>Priority Action 2</td><td>Rooftop solar PV (phase 1, main roof) &mdash; high impact, high cost (RM 180,000 estimated), 4&ndash;6 months including approvals</td></tr>
+      <tr><td>Priority Action 3</td><td>LED lighting upgrade across both buildings &mdash; medium impact, low cost, 4&ndash;6 weeks</td></tr>
+      <tr><td>Longer-term direction</td><td>Renewable electricity procurement for any residual grid demand once solar is operational; phased replacement of minibuses with electric or hybrid models at next fleet renewal</td></tr>
+      <tr><td>Monitoring</td><td>Monthly kWh from utility bills; monthly litres of petrol and diesel purchased; quarterly waste tonnage from contractor; annual re-run of full baseline</td></tr>
+      <tr><td>Review point</td><td>Next full management review, Q1 of the following year</td></tr>
+    </table>
+    <p>Notice this is still one page. Nothing here required sophisticated modelling. What makes it credible is that every line traces back to a number or a decision made earlier in the course, not to an aspiration invented on the spot.</p>`,
+  guidedActivityIntro: `<p>The roadmap builder below automatically pulls in your baseline total and top hotspots from Module 2, and the three priority actions you selected in Module 3. Fill in indicative cost and timeline for each action, then complete the longer-term direction, monitoring indicators and review point to finish your one-page roadmap. Use the print button to save or export it once you are happy with it.</p>`,
+  tool: "roadmap",
+  selfCheck: [
+    { question: "Looking back at Plan A and Plan B at the top of this module, what is the single biggest practical difference between them?",
+      options: [
+        { text: "Plan B is longer and uses more technical language.", correct:false, feedback: "Length and jargon are not the point, and a needlessly long or jargon-heavy plan is not automatically better. The real difference is about specificity, not word count." },
+        { text: "Plan B contains a quantified baseline, named priorities, costs, dates and indicators, so someone could act on it immediately, whereas Plan A contains only intentions.", correct:true, feedback: "Correct. That is precisely why this course front-loads the baseline and prioritisation work before asking you to write anything resembling a roadmap. A roadmap is only as strong as the analysis underneath it." },
+        { text: "Plan A is more ambitious because it names a net-zero date.", correct:false, feedback: "A stated date can be part of ambition, but ambition without a route to get there is not the same as a plan. Plan B could easily include a target date too, alongside the specifics that make it achievable." }
+      ] }
+  ],
+  reflection: { prompts: [
+    "If you were presenting this roadmap to your management team next week, what is the first decision you would ask them to make?",
+    "Who in your organisation would need to own each of your three priority actions for them to actually happen, and have you named them yet?"
+  ]},
+  output: { title: "One-Page Net-Zero Roadmap", description: "A single page containing your baseline figure, main hotspots, three priority actions with impact, cost and timeline, your longer-term direction, two to four monitoring indicators, and a specific review point. This is the final assessed artefact for the course." }
+});
+
+/* ============================================================
+   COURSE COMPLETION — final rubric self-check
+   ============================================================ */
+function renderCompletion(){
+  markProgress("complete");
+  const rubricRows = courseData.rubric.map((r, i) => {
+    const id = "rubric-" + i;
+    const val = state.rubricSelf[id];
+    return `<div class="rubric-row">
+      <div><strong>${esc(r.criterion)}</strong></div>
+      <div class="field hint" style="margin:0;">${esc(r.good)}</div>
+      <div class="rubric-toggle">
+        <button class="${val==="Achieved"?"sel-achieved":""}" onclick="state.rubricSelf['${id}']='Achieved'; render();">Achieved</button>
+        <button class="${val==="Revise"?"sel-revise":""}" onclick="state.rubricSelf['${id}']='Revise'; render();">Needs revision</button>
+      </div>
+    </div>`;
+  }).join("");
+
+  const baselineTotal = state.baseline.rows.reduce((sum,r) => sum + baselineRowEmissions(r), 0);
+  const selectedActions = state.actions.rows.filter(a => state.actions.selectedIds.includes(a.id));
+
+  return `
+  <div class="eyebrow">Course completion</div>
+  <h1>You have built a net-zero pathway</h1>
+  <p>Four weeks ago the honest answer to &ldquo;what exactly are our emissions today?&rdquo; may well have been a shrug. You now have a boundary map, a baseline figure with its assumptions laid out, a scored list of reduction options and a one-page roadmap that names actions, costs, timelines and a review point. That is a genuinely different starting position for a conversation with management.</p>
+
+  ${renderJourneyMap(4)}
+
+  <h2>Your work at a glance</h2>
+  <table>
+    <tr><th>Artefact</th><th>Status</th></tr>
+    <tr><td>Organisation Carbon Boundary Map</td><td>${state.boundary.orgName ? "Drafted for " + esc(state.boundary.orgName) : "Not yet started"}</td></tr>
+    <tr><td>Baseline Carbon Footprint</td><td>${baselineTotal>0 ? fmt(baselineTotal,2)+" tCO2e estimated" : "Not yet calculated"}</td></tr>
+    <tr><td>Carbon Action Prioritisation Matrix</td><td>${selectedActions.length ? selectedActions.length + " priority action(s) selected" : "Not yet selected"}</td></tr>
+    <tr><td>One-Page Net-Zero Roadmap</td><td>${state.roadmap.reviewPoint ? "Review point set: " + esc(state.roadmap.reviewPoint) : "Roadmap in progress"}</td></tr>
+  </table>
+
+  <div class="btn-row">
+    <button class="btn secondary" onclick="navigateTo('m4')">&larr; Open my roadmap again</button>
+  </div>
+
+  <h2>Final self-check against the roadmap rubric</h2>
+  <p>This CPD course uses a simple <strong>Achieved / Needs Revision</strong> model rather than fine-grained numerical grading. Be honest with yourself here &mdash; the point is a roadmap you can actually use, not a perfect score.</p>
+  <div class="card">${rubricRows}</div>
+
+  <h2>Where this goes next</h2>
+  <p>The roadmap you have built is a first pathway, not a finished carbon-management system. Treat it as something to bring to your management team, refine with better data over time, and revisit at the review point you set. Purchased goods and services, the hardest category to quantify well, is a natural next area to develop once this first cycle is embedded.</p>
+
+  <div class="callout good">
+    <strong>A closing thought</strong>
+    <p style="margin:.6em 0 0;">If you were presenting this roadmap to your management team next week, what is the first decision you would ask them to make? That question, more than any grade, is the real test of whether this course has done its job.</p>
+  </div>
+
+  ${renderCourseFooter()}
+  `;
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+render();
+</script>
 </body>
 </html>
